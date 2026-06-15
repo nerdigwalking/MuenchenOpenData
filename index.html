@@ -442,18 +442,29 @@ function renderP(){
    MELDUNGEN
 ══════════════════════════════════════ */
 let mData=[],mFilt=[],mMap=null,mCharts={};
+const M_API='https://machmuenchenbesser.de/georeport/v2/requests.json?start_date=2025-01-01';
+const CORS_PROXY='https://api.allorigins.win/get?url=';
 async function initM(){
-  try{
-    const res=await fetch('https://machmuenchenbesser.de/georeport/v2/requests.json?start_date=2025-01-01');
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const j=await res.json();
-    mData=Array.isArray(j)?j:(j.service_requests||j.requests||[]);
-    buildM();
-  }catch(e){
+  // Try direct first (works if server sets CORS headers), then proxy fallback
+  let j=null,lastErr='';
+  for(const url of [M_API, CORS_PROXY+encodeURIComponent(M_API)]){
+    try{
+      const res=await fetch(url);
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      const raw=await res.json();
+      // allorigins wraps response in {contents: "..."}
+      j=raw.contents?JSON.parse(raw.contents):raw;
+      if(j)break;
+    }catch(e){lastErr=e.message;}
+  }
+  if(!j){
     document.getElementById('m-load').style.display='none';
     document.getElementById('m-err').style.display='block';
-    document.getElementById('m-err').innerHTML=`<strong>API nicht erreichbar.</strong> Lade die Datei auf GitHub Pages oder Netlify hoch, um die Live-API zu nutzen. Lokal: <code>npx serve .</code><br><small>${e.message}</small>`;
+    document.getElementById('m-err').innerHTML=`<strong>Meldungen konnten nicht geladen werden.</strong> Die API ist momentan nicht erreichbar oder der CORS-Proxy antwortet nicht.<br><small style="color:#854F0B">${lastErr}</small>`;
+    return;
   }
+  mData=Array.isArray(j)?j:(j.service_requests||j.requests||[]);
+  buildM();
 }
 function buildM(){
   document.getElementById('m-load').style.display='none';
