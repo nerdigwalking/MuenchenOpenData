@@ -8,95 +8,111 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #f5f5f2; --surface: #fff; --border: #e5e4de; --text: #1a1a18;
-  --muted: #888780; --accent: #378ADD; --green: #1D9E75; --amber: #EF9F27;
-  --radius: 10px; --radius-lg: 14px;
+  --bg: #f5f5f2; --surface: #fff; --border: #e5e4de;
+  --text: #1a1a18; --muted: #888780; --accent: #378ADD;
+  --green: #1D9E75; --amber: #EF9F27; --purple: #534AB7; --coral: #D85A30;
+  --r: 10px; --rl: 14px;
 }
-body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+body { font-family: system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
 /* NAV */
-nav { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0; padding: 0 24px; height: 52px; }
-.nav-brand { font-size: 15px; font-weight: 500; color: var(--text); margin-right: 28px; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
-.nav-brand svg { flex-shrink: 0; }
-.nav-links { display: flex; gap: 4px; }
-.nav-link { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-size: 14px; color: var(--muted); cursor: pointer; border: none; background: none; transition: background .15s, color .15s; white-space: nowrap; }
-.nav-link:hover { background: var(--bg); color: var(--text); }
-.nav-link.active { background: #EBF4FD; color: #185FA5; font-weight: 500; }
-.nav-link svg { flex-shrink: 0; }
+nav { background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 24px; height:52px; gap:0; overflow-x:auto; }
+.nav-brand { font-size:14px; font-weight:500; margin-right:20px; white-space:nowrap; display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.nav-links { display:flex; gap:2px; }
+.nav-btn { display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; font-size:13px; color:var(--muted); cursor:pointer; border:none; background:none; white-space:nowrap; transition:background .12s,color .12s; }
+.nav-btn:hover { background:var(--bg); color:var(--text); }
+.nav-btn.active { background:#EBF4FD; color:#185FA5; font-weight:500; }
 
 /* PAGES */
-.page { display: none; }
-.page.active { display: block; }
+.page { display:none; }
+.page.active { display:block; }
+.container { max-width:1200px; margin:0 auto; padding:24px; }
 
-/* LAYOUT */
-.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+/* ── HOME ── */
+.hero { padding:60px 24px 40px; text-align:center; }
+.hero h1 { font-size:32px; font-weight:500; margin-bottom:10px; }
+.hero p { font-size:15px; color:var(--muted); max-width:560px; margin:0 auto; line-height:1.6; }
+.cards-home { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; max-width:1000px; margin:36px auto 0; padding:0 24px 56px; }
+.hcard { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:22px; cursor:pointer; transition:border-color .15s; text-align:left; }
+.hcard:hover { border-color:#b5d4f4; }
+.hcard-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+.hcard h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+.hcard p { font-size:12px; color:var(--muted); line-height:1.5; }
+.hcard .tag { display:inline-block; margin-top:10px; font-size:11px; padding:2px 8px; border-radius:100px; }
 
-/* HOME */
-.home-hero { padding: 48px 24px 36px; max-width: 700px; margin: 0 auto; text-align: center; }
-.home-hero h1 { font-size: 28px; font-weight: 500; margin-bottom: 10px; }
-.home-hero p { font-size: 15px; color: var(--muted); line-height: 1.6; }
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 900px; margin: 36px auto 0; padding: 0 24px 48px; }
-.page-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; cursor: pointer; transition: box-shadow .15s, border-color .15s; }
-.page-card:hover { border-color: #b5d4f4; }
-.page-card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-.page-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
-.page-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-.page-card .tag { display: inline-block; margin-top: 12px; font-size: 11px; padding: 3px 8px; border-radius: 100px; background: #EBF4FD; color: #185FA5; }
+/* ── METRICS ── */
+.metric-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.metric { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; }
+.metric-label { font-size:11px; color:var(--muted); margin-bottom:3px; }
+.metric-value { font-size:20px; font-weight:500; }
 
-/* METRICS */
-.metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-.metric-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-.metric-value { font-size: 22px; font-weight: 500; }
+/* ── LAYOUT ── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:18px; }
+.card-title { font-size:11px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:12px; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+.mb { margin-bottom:18px; }
 
-/* CARDS */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
-.card-title { font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 14px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+/* ── MAPS ── */
+.map-box { height:380px; border-radius:8px; border:1px solid var(--border); }
+.map-box-lg { height:440px; border-radius:8px; border:1px solid var(--border); }
 
-/* MAP */
-#map-park, #map-meld { height: 380px; border-radius: 8px; border: 1px solid var(--border); }
-#map-meld { height: 420px; }
+/* ── CHARTS ── */
+.ch { position:relative; height:300px; }
+.ch-sm { position:relative; height:250px; }
 
-/* TABLE */
-.search-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
-.search-row input, .search-row select { font-size: 14px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fafaf8; color: var(--text); outline: none; }
-.search-row input { flex: 1; min-width: 180px; }
-.search-row input:focus, .search-row select:focus { border-color: var(--accent); background: var(--surface); }
-.table-wrap { max-height: 340px; overflow-y: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
-th { text-align: left; font-size: 11px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); padding: 8px 8px 10px; text-transform: uppercase; letter-spacing: .03em; }
-td { padding: 9px 8px; border-bottom: 1px solid #f0efea; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #fafaf8; }
-.table-footer { margin-top: 8px; font-size: 12px; color: var(--muted); }
+/* ── TABLE ── */
+.search-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center; }
+.search-row input, .search-row select { font-size:13px; padding:7px 10px; border:1px solid var(--border); border-radius:7px; background:#fafaf8; color:var(--text); outline:none; }
+.search-row input { flex:1; min-width:160px; }
+.search-row input:focus, .search-row select:focus { border-color:var(--accent); }
+.table-wrap { max-height:320px; overflow-y:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed; }
+th { text-align:left; font-size:11px; font-weight:500; color:var(--muted); border-bottom:1px solid var(--border); padding:7px 6px 9px; text-transform:uppercase; letter-spacing:.03em; }
+td { padding:8px 6px; border-bottom:1px solid #f0efea; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#fafaf8; }
+.tf { margin-top:7px; font-size:11px; color:var(--muted); }
 
-/* BADGES */
-.badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 11px; font-weight: 500; }
-.badge-open  { background: #FEF3CD; color: #854F0B; }
-.badge-closed{ background: #EAF3DE; color: #3B6D11; }
-.badge-none  { background: #F1EFE8; color: var(--muted); }
-.stars { color: #BA7517; }
+/* ── BADGES ── */
+.badge { display:inline-block; padding:2px 7px; border-radius:100px; font-size:11px; font-weight:500; }
+.b-green { background:#EAF3DE; color:#3B6D11; }
+.b-amber { background:#FEF3CD; color:#854F0B; }
+.b-gray  { background:#F1EFE8; color:#5F5E5A; }
+.b-blue  { background:#EBF4FD; color:#185FA5; }
+.b-purple{ background:#EEEDFE; color:#3C3489; }
+.stars { color:#BA7517; }
 
-/* CHARTS */
-.chart-wrap { position: relative; height: 300px; }
-.chart-wrap-sm { position: relative; height: 260px; }
+/* ── LOADING / ERROR ── */
+.loading-box { display:flex; flex-direction:column; align-items:center; justify-content:center; height:180px; gap:12px; color:var(--muted); font-size:13px; }
+.spinner { width:26px; height:26px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.error-box { background:#FEF3CD; border:1px solid var(--amber); border-radius:var(--r); padding:14px 18px; font-size:13px; color:#633806; margin-bottom:18px; }
 
-/* LOADING */
-.loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px; gap: 12px; color: var(--muted); font-size: 14px; }
-.spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.error-state { background: #FEF3CD; border: 1px solid #EF9F27; border-radius: var(--radius); padding: 16px 20px; font-size: 13px; color: #633806; }
+/* ── IMPRESSUM ── */
+.imprint-body { max-width:680px; margin:0 auto; padding:40px 24px 60px; }
+.imprint-body h2 { font-size:22px; font-weight:500; margin-bottom:6px; }
+.imprint-body h3 { font-size:15px; font-weight:500; margin:24px 0 6px; }
+.imprint-body p, .imprint-body a { font-size:14px; color:var(--muted); line-height:1.7; }
+.imprint-body a { color:var(--accent); text-decoration:none; }
+.imprint-body .section { border-top:1px solid var(--border); padding-top:20px; margin-top:20px; }
+.source-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+.source-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; }
+.source-card h4 { font-size:13px; font-weight:500; margin-bottom:4px; }
+.source-card p { font-size:12px; color:var(--muted); }
 
-/* LEAFLET POPUP */
-.leaflet-popup-content-wrapper { border-radius: 10px; }
-.popup-title { font-weight: 500; font-size: 13px; margin-bottom: 3px; }
-.popup-sub { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
-.popup-badge { font-size: 11px; }
+/* LEAFLET */
+.leaflet-popup-content-wrapper { border-radius:10px; }
+.pu-title { font-weight:500; font-size:13px; margin-bottom:3px; }
+.pu-sub { font-size:12px; color:var(--muted); margin-bottom:5px; }
 
-@media (max-width: 768px) {
-  .metric-grid { grid-template-columns: repeat(2, 1fr); }
-  .two-col { grid-template-columns: 1fr; }
+/* Legend */
+.map-legend { background:#fff; padding:10px 12px; border-radius:8px; border:1px solid #e5e4de; font-size:11px; color:#444; line-height:1.9; }
+.leg-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+
+@media(max-width:768px){
+  .metric-grid{grid-template-columns:repeat(2,1fr);}
+  .two-col{grid-template-columns:1fr;}
+  .source-list{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -104,75 +120,91 @@ tr:hover td { background: #fafaf8; }
 
 <nav>
   <div class="nav-brand">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#378ADD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     München Open Data
   </div>
   <div class="nav-links">
-    <button class="nav-link active" onclick="showPage('home')" id="nav-home">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      Übersicht
+    <button class="nav-btn active" onclick="go('home')" id="nb-home">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Start
     </button>
-    <button class="nav-link" onclick="showPage('parkhaeuser')" id="nav-parkhaeuser">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9h4a3 3 0 0 1 0 6H9"/></svg>
-      Parkhäuser
+    <button class="nav-btn" onclick="go('parkhaeuser')" id="nb-parkhaeuser">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9h4a3 3 0 0 1 0 6H9"/></svg>Parkhäuser
     </button>
-    <button class="nav-link" onclick="showPage('meldungen')" id="nav-meldungen">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Meldungen
+    <button class="nav-btn" onclick="go('meldungen')" id="nb-meldungen">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Meldungen
+    </button>
+    <button class="nav-btn" onclick="go('parkraum')" id="nb-parkraum">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Parkraum
+    </button>
+    <button class="nav-btn" onclick="go('glas')" id="nb-glas">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Glascontainer
+    </button>
+    <button class="nav-btn" onclick="go('impressum')" id="nb-impressum">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Impressum
     </button>
   </div>
 </nav>
 
-<!-- HOME -->
+<!-- ════════ START ════════ -->
 <div id="page-home" class="page active">
-  <div class="home-hero">
+  <div class="hero">
     <h1>München Open Data</h1>
-    <p>Visualisierung öffentlicher Datensätze der Landeshauptstadt München. Daten stammen direkt aus den Open-Data-APIs der Stadt und werden live geladen.</p>
+    <p>Interaktive Visualisierungen öffentlicher Datensätze der Landeshauptstadt München — direkt aus den offiziellen Open-Data-APIs.</p>
   </div>
-  <div class="card-grid">
-    <div class="page-card" onclick="showPage('parkhaeuser')">
-      <div class="page-card-icon" style="background:#EBF4FD;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9h4a3 3 0 0 1 0 6H9"/></svg>
+  <div class="cards-home">
+    <div class="hcard" onclick="go('parkhaeuser')">
+      <div class="hcard-icon" style="background:#EBF4FD">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9h4a3 3 0 0 1 0 6H9"/></svg>
       </div>
       <h3>Parkhäuser</h3>
-      <p>74 Parkhäuser und Tiefgaragen in München mit Standort, Bewertung und Adresse.</p>
-      <span class="tag">74 Standorte</span>
+      <p>74 Parkhäuser und Tiefgaragen mit Karte, Bewertungen und Adresssuche.</p>
+      <span class="tag" style="background:#EBF4FD;color:#185FA5">74 Standorte · statisch</span>
     </div>
-    <div class="page-card" onclick="showPage('meldungen')">
-      <div class="page-card-icon" style="background:#FEF3CD;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div class="hcard" onclick="go('meldungen')">
+      <div class="hcard-icon" style="background:#FEF3CD">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
-      <h3>Meldungen</h3>
-      <p>Bürgermeldungen zu Beschädigungen und Verschmutzungen via machmuenchenbesser.de seit 2025.</p>
-      <span class="tag" style="background:#FEF3CD;color:#854F0B;">Live-API</span>
+      <h3>Bürgermeldungen</h3>
+      <p>Meldungen zu Schäden und Verschmutzungen via machmuenchenbesser.de ab 2025.</p>
+      <span class="tag" style="background:#FEF3CD;color:#854F0B">Live-API · Open311</span>
+    </div>
+    <div class="hcard" onclick="go('parkraum')">
+      <div class="hcard-icon" style="background:#EEEDFE">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3C3489" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      </div>
+      <h3>Parkraummanagement</h3>
+      <p>Lizenzgebiete des Münchner Parkraummanagements als interaktive Polygone.</p>
+      <span class="tag" style="background:#EEEDFE;color:#3C3489">Live-API · WFS GeoJSON</span>
+    </div>
+    <div class="hcard" onclick="go('glas')">
+      <div class="hcard-icon" style="background:#EAF3DE">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Glascontainer</h3>
+      <p>Barrierefreie Glascontainer-Standorte mit Informationen zu Glasfarben.</p>
+      <span class="tag" style="background:#EAF3DE;color:#3B6D11">Live-API · WFS GeoJSON</span>
     </div>
   </div>
 </div>
 
-<!-- PARKHÄUSER -->
+<!-- ════════ PARKHÄUSER ════════ -->
 <div id="page-parkhaeuser" class="page">
   <div class="container">
     <div class="metric-grid">
       <div class="metric"><div class="metric-label">Parkhäuser gesamt</div><div class="metric-value">74</div></div>
       <div class="metric"><div class="metric-label">Mit Bewertung</div><div class="metric-value" id="p-rated">—</div></div>
       <div class="metric"><div class="metric-label">Ø Bewertung</div><div class="metric-value" id="p-avg">—</div></div>
-      <div class="metric"><div class="metric-label">Bestbewertet</div><div class="metric-value" id="p-best">—</div></div>
+      <div class="metric"><div class="metric-label">Bestbewertet</div><div class="metric-value">5.00 ★</div></div>
     </div>
-    <div class="two-col" style="margin-bottom:20px;">
-      <div class="card">
-        <div class="card-title">Karte aller Standorte</div>
-        <div id="map-park"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Top 10 nach Bewertung</div>
-        <div class="chart-wrap"><canvas id="topChart" role="img" aria-label="Top Parkhäuser nach Bewertung">Top Parkhäuser.</canvas></div>
-      </div>
+    <div class="two-col mb">
+      <div class="card"><div class="card-title">Karte</div><div class="map-box" id="map-park"></div></div>
+      <div class="card"><div class="card-title">Top 10 nach Bewertung</div><div class="ch"><canvas id="topChart" role="img" aria-label="Top Parkhäuser nach Bewertung">Top-Bewertungen.</canvas></div></div>
     </div>
     <div class="card">
       <div class="card-title">Alle Standorte</div>
       <div class="search-row">
-        <input type="text" id="p-search" placeholder="Name oder Straße…" oninput="filterParkhaeuser()">
-        <select id="p-rfilter" onchange="filterParkhaeuser()">
+        <input type="text" id="p-search" placeholder="Name oder Straße…" oninput="filterP()">
+        <select id="p-rf" onchange="filterP()">
           <option value="all">Alle Bewertungen</option>
           <option value="rated">Nur bewertet</option>
           <option value="5">★ 5.0</option>
@@ -180,273 +212,473 @@ tr:hover td { background: #fafaf8; }
           <option value="3">★ 3.0+</option>
         </select>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th style="width:36%">Name</th>
-            <th style="width:28%">Adresse</th>
-            <th style="width:18%">Koordinaten</th>
-            <th style="width:18%">Bewertung</th>
-          </tr></thead>
-          <tbody id="p-tbody"></tbody>
-        </table>
-      </div>
-      <div class="table-footer" id="p-count"></div>
+      <div class="table-wrap"><table><thead><tr>
+        <th style="width:36%">Name</th><th style="width:28%">Adresse</th>
+        <th style="width:18%">Koordinaten</th><th style="width:18%">Bewertung</th>
+      </tr></thead><tbody id="p-tbody"></tbody></table></div>
+      <div class="tf" id="p-cnt"></div>
     </div>
   </div>
 </div>
 
-<!-- MELDUNGEN -->
+<!-- ════════ MELDUNGEN ════════ -->
 <div id="page-meldungen" class="page">
   <div class="container">
-    <div id="m-loading" class="loading-state">
-      <div class="spinner"></div>
-      Meldungen werden geladen…
-    </div>
-    <div id="m-error" class="error-state" style="display:none;margin-bottom:20px;"></div>
-    <div id="m-content" style="display:none;">
+    <div id="m-load" class="loading-box"><div class="spinner"></div>Meldungen werden geladen…</div>
+    <div id="m-err" class="error-box" style="display:none"></div>
+    <div id="m-body" style="display:none">
       <div class="metric-grid">
-        <div class="metric"><div class="metric-label">Meldungen gesamt</div><div class="metric-value" id="m-total">—</div></div>
+        <div class="metric"><div class="metric-label">Meldungen gesamt</div><div class="metric-value" id="m-tot">—</div></div>
         <div class="metric"><div class="metric-label">Offen</div><div class="metric-value" id="m-open">—</div></div>
-        <div class="metric"><div class="metric-label">Geschlossen</div><div class="metric-value" id="m-closed">—</div></div>
+        <div class="metric"><div class="metric-label">Geschlossen</div><div class="metric-value" id="m-cls">—</div></div>
         <div class="metric"><div class="metric-label">Kategorien</div><div class="metric-value" id="m-cats">—</div></div>
       </div>
-      <div class="two-col" style="margin-bottom:20px;">
-        <div class="card">
-          <div class="card-title">Karte der Meldungen</div>
-          <div id="map-meld"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Top-Kategorien</div>
-          <div class="chart-wrap"><canvas id="catChart" role="img" aria-label="Meldungen nach Kategorie">Kategorien.</canvas></div>
-        </div>
+      <div class="two-col mb">
+        <div class="card"><div class="card-title">Karte</div><div class="map-box-lg" id="map-meld"></div></div>
+        <div class="card"><div class="card-title">Top-Kategorien</div><div class="ch"><canvas id="catChart" role="img" aria-label="Kategorien der Meldungen">Kategorien.</canvas></div></div>
       </div>
-      <div class="two-col" style="margin-bottom:20px;">
-        <div class="card">
-          <div class="card-title">Status-Verteilung</div>
-          <div class="chart-wrap-sm"><canvas id="statusChart" role="img" aria-label="Offene vs. geschlossene Meldungen">Status.</canvas></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Meldungen nach Monat</div>
-          <div class="chart-wrap-sm"><canvas id="timeChart" role="img" aria-label="Zeitverlauf der Meldungen">Zeitverlauf.</canvas></div>
-        </div>
+      <div class="two-col mb">
+        <div class="card"><div class="card-title">Status</div><div class="ch-sm"><canvas id="statusChart" role="img" aria-label="Status offen vs geschlossen">Status.</canvas></div></div>
+        <div class="card"><div class="card-title">Meldungen nach Monat</div><div class="ch-sm"><canvas id="timeChart" role="img" aria-label="Zeitverlauf Meldungen">Zeitverlauf.</canvas></div></div>
       </div>
       <div class="card">
         <div class="card-title">Alle Meldungen</div>
         <div class="search-row">
-          <input type="text" id="m-search" placeholder="Beschreibung oder Adresse…" oninput="filterMeldungen()">
-          <select id="m-sfilter" onchange="filterMeldungen()">
-            <option value="all">Alle Status</option>
-            <option value="open">Offen</option>
-            <option value="closed">Geschlossen</option>
-          </select>
-          <select id="m-cfilter" onchange="filterMeldungen()">
-            <option value="all">Alle Kategorien</option>
-          </select>
+          <input type="text" id="m-search" placeholder="Beschreibung oder Adresse…" oninput="filterM()">
+          <select id="m-sf" onchange="filterM()"><option value="all">Alle Status</option><option value="open">Offen</option><option value="closed">Geschlossen</option></select>
+          <select id="m-cf" onchange="filterM()"><option value="all">Alle Kategorien</option></select>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th style="width:8%">ID</th>
-              <th style="width:22%">Kategorie</th>
-              <th style="width:28%">Adresse</th>
-              <th style="width:14%">Datum</th>
-              <th style="width:12%">Status</th>
-            </tr></thead>
-            <tbody id="m-tbody"></tbody>
-          </table>
-        </div>
-        <div class="table-footer" id="m-count"></div>
+        <div class="table-wrap"><table><thead><tr>
+          <th style="width:8%">ID</th><th style="width:24%">Kategorie</th>
+          <th style="width:30%">Adresse</th><th style="width:14%">Datum</th><th style="width:12%">Status</th>
+        </tr></thead><tbody id="m-tbody"></tbody></table></div>
+        <div class="tf" id="m-cnt"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ PARKRAUM ════════ -->
+<div id="page-parkraum" class="page">
+  <div class="container">
+    <div id="pr-load" class="loading-box"><div class="spinner"></div>Parkraumgebiete werden geladen…</div>
+    <div id="pr-err" class="error-box" style="display:none"></div>
+    <div id="pr-body" style="display:none">
+      <div class="metric-grid">
+        <div class="metric"><div class="metric-label">Gebiete gesamt</div><div class="metric-value" id="pr-tot">—</div></div>
+        <div class="metric"><div class="metric-label">In Betrieb</div><div class="metric-value" id="pr-act">—</div></div>
+        <div class="metric"><div class="metric-label">In Planung</div><div class="metric-value" id="pr-plan">—</div></div>
+        <div class="metric"><div class="metric-label">Überwachungstypen</div><div class="metric-value" id="pr-utyp">—</div></div>
+      </div>
+      <div class="two-col mb">
+        <div class="card"><div class="card-title">Karte der Lizenzgebiete</div><div class="map-box-lg" id="map-pr"></div></div>
+        <div class="card"><div class="card-title">Status der Gebiete</div><div class="ch-sm"><canvas id="prStatusChart" role="img" aria-label="Status Parkraumgebiete">Status.</canvas></div>
+          <div class="card-title" style="margin-top:20px">Überwachungstypen</div>
+          <div class="ch-sm"><canvas id="prUebChart" role="img" aria-label="Überwachungstypen">Überwachung.</canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Alle Gebiete</div>
+        <div class="search-row">
+          <input type="text" id="pr-search" placeholder="Gebietsname…" oninput="filterPR()">
+          <select id="pr-sf" onchange="filterPR()"><option value="all">Alle Status</option></select>
+          <select id="pr-uf" onchange="filterPR()"><option value="all">Alle Überwachung</option></select>
+        </div>
+        <div class="table-wrap"><table><thead><tr>
+          <th style="width:30%">Name</th><th style="width:25%">Maßnahme</th>
+          <th style="width:17%">Überwachung</th><th style="width:14%">Eröffnung</th><th style="width:14%">Status</th>
+        </tr></thead><tbody id="pr-tbody"></tbody></table></div>
+        <div class="tf" id="pr-cnt"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ GLASCONTAINER ════════ -->
+<div id="page-glas" class="page">
+  <div class="container">
+    <div id="g-load" class="loading-box"><div class="spinner"></div>Glascontainer werden geladen…</div>
+    <div id="g-err" class="error-box" style="display:none"></div>
+    <div id="g-body" style="display:none">
+      <div class="metric-grid">
+        <div class="metric"><div class="metric-label">Standorte gesamt</div><div class="metric-value" id="g-tot">—</div></div>
+        <div class="metric"><div class="metric-label">Mit Braunglas</div><div class="metric-value" id="g-br">—</div></div>
+        <div class="metric"><div class="metric-label">Mit Grünglas</div><div class="metric-value" id="g-gr">—</div></div>
+        <div class="metric"><div class="metric-label">Mit Weißglas</div><div class="metric-value" id="g-wh">—</div></div>
+      </div>
+      <div class="two-col mb">
+        <div class="card"><div class="card-title">Karte der Standorte</div><div class="map-box-lg" id="map-glas"></div></div>
+        <div class="card">
+          <div class="card-title">Glastypen je Standort</div>
+          <div class="ch-sm"><canvas id="glasTypeChart" role="img" aria-label="Glastypen pro Standort">Glastypen.</canvas></div>
+          <div class="card-title" style="margin-top:20px">Glastypen-Kombination</div>
+          <div class="ch-sm"><canvas id="glasComboChart" role="img" aria-label="Kombination Glastypen">Kombinationen.</canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Alle Standorte</div>
+        <div class="table-wrap"><table><thead><tr>
+          <th style="width:40%">Adresse</th>
+          <th style="width:20%">Braunglas</th><th style="width:20%">Grünglas</th><th style="width:20%">Weißglas</th>
+        </tr></thead><tbody id="g-tbody"></tbody></table></div>
+        <div class="tf" id="g-cnt"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ IMPRESSUM ════════ -->
+<div id="page-impressum" class="page">
+  <div class="imprint-body">
+    <h2>Impressum</h2>
+    <p>Dieses Dashboard ist ein privates Demonstrationsprojekt zur Visualisierung öffentlicher Open-Data-Quellen der Landeshauptstadt München. Es besteht kein offizieller Zusammenhang mit der Stadt München.</p>
+
+    <div class="section">
+      <h3>Verwendete Datenquellen</h3>
+      <div class="source-list">
+        <div class="source-card">
+          <h4>Parkhäuser</h4>
+          <p>Open Data Portal München<br>Lizenz: CC BY 4.0<br><a href="https://opendata.muenchen.de" target="_blank">opendata.muenchen.de</a></p>
+        </div>
+        <div class="source-card">
+          <h4>Bürgermeldungen</h4>
+          <p>machmuenchenbesser.de · Open311 GeoReport v2<br>Lizenz: CC0 1.0<br><a href="https://machmuenchenbesser.de" target="_blank">machmuenchenbesser.de</a></p>
+        </div>
+        <div class="source-card">
+          <h4>Parkraummanagement</h4>
+          <p>Geoportal München · WFS-Dienst<br>Lizenz: CC BY 4.0<br><a href="https://geoportal.muenchen.de" target="_blank">geoportal.muenchen.de</a></p>
+        </div>
+        <div class="source-card">
+          <h4>Glascontainer</h4>
+          <p>Geoportal München · WFS-Dienst (AWM)<br>Lizenz: CC BY 4.0<br><a href="https://geoportal.muenchen.de" target="_blank">geoportal.muenchen.de</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Verwendete Technologien</h3>
+      <p><a href="https://leafletjs.com" target="_blank">Leaflet.js</a> (BSD) · <a href="https://www.chartjs.org" target="_blank">Chart.js</a> (MIT) · <a href="https://proj4js.org" target="_blank">proj4js</a> (MIT) · Kartenkacheln: <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> (ODbL)</p>
+    </div>
+
+    <div class="section">
+      <h3>Datenschutz</h3>
+      <p>Dieses Dashboard lädt Daten direkt aus öffentlichen APIs. Es werden keine personenbezogenen Daten gespeichert. Die Kartenkacheln werden von OpenStreetMap-Servern bezogen; dabei gelten deren <a href="https://wiki.openstreetmap.org/wiki/Privacy_Policy" target="_blank">Datenschutzhinweise</a>.</p>
+    </div>
+
+    <div class="section">
+      <h3>Haftungsausschluss</h3>
+      <p>Die Daten werden ohne Gewähr auf Vollständigkeit oder Aktualität bereitgestellt. Für die Inhalte der verlinkten externen Quellen wird keine Haftung übernommen.</p>
     </div>
   </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
 <script>
-/* ── PAGE ROUTING ── */
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.getElementById('nav-' + id).classList.add('active');
-  if (id === 'parkhaeuser') initParkhaeuser();
-  if (id === 'meldungen') initMeldungen();
+/* ── UTM→WGS84 ── */
+proj4.defs('EPSG:25832','+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+function utm2wgs(x,y){const r=proj4('EPSG:25832','WGS84',[x,y]);return{lat:r[1],lng:r[0]};}
+
+/* ── ROUTING ── */
+const inited={};
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nb-'+id).classList.add('active');
+  if(id==='parkhaeuser'&&!inited.parkhaeuser){inited.parkhaeuser=true;initP();}
+  if(id==='meldungen'&&!inited.meldungen){inited.meldungen=true;initM();}
+  if(id==='parkraum'&&!inited.parkraum){inited.parkraum=true;initPR();}
+  if(id==='glas'&&!inited.glas){inited.glas=true;initG();}
 }
 
-/* ══════════════════════════════════
-   PARKHÄUSER
-══════════════════════════════════ */
-const PLACES = [{"id":"1224104","title":"Tiefgarage P&R Fürstenried","street":"Neurieder Str.","sn":"40","lat":48.087114,"lng":11.4847368,"r":0},{"id":"1253403","title":"Parkhaus Audi Dome","street":"Siegenburger Str.","sn":"65","lat":48.12738543,"lng":11.52276568,"r":0},{"id":"1253402","title":"Parkhaus Laimer Platz","street":"Fürstenrieder Str.","sn":"62","lat":48.13591,"lng":11.5026,"r":0},{"id":"1224105","title":"Tiefgarage P&R Heimeranplatz","street":"Garmischer Str.","sn":"19","lat":48.1314008,"lng":11.5309121,"r":0},{"id":"1224110","title":"West 4","street":"Elsenheimerstr.","sn":"57","lat":48.13744,"lng":11.52306,"r":0},{"id":"1250726","title":"Parkhaus Euroguard","street":"Gollierstr.","sn":"6","lat":48.13580359,"lng":11.54693858,"r":5},{"id":"23503","title":"Parkhaus Saturn","street":"Schwanthalerstr. 113","sn":null,"lat":48.1376622,"lng":11.5467751,"r":0},{"id":"1224107","title":"Tiefgarage P&R Mangfallplatz","street":"Am Hollerbusch","sn":"22","lat":48.0953261,"lng":11.5744451,"r":0},{"id":"1253404","title":"Tiefgarage ZOB","street":"Bernhard-Wicki-Str.","sn":"11","lat":48.14248249,"lng":11.54842869,"r":0},{"id":"121102","title":"CarPark Cristal","street":"Schwanthalerstr.","sn":"36","lat":48.13758,"lng":11.55911,"r":0},{"id":"121091","title":"Parkgarage am Goethe Center","street":"Senefelderstr.","sn":"6","lat":48.1387,"lng":11.5601,"r":0},{"id":"121095","title":"Sonnenhof-Garage","street":"Landwehrstr.","sn":"10","lat":48.1364089,"lng":11.5632499,"r":4.5},{"id":"63679","title":"Parkgarage Senefelderstraße","street":"Senefelderstr.","sn":"7-13","lat":48.13876167,"lng":11.56033949,"r":0},{"id":"121090","title":"Hopfenpost Parkhaus","street":"Hopfenstr.","sn":"6","lat":48.143337,"lng":11.554503,"r":3},{"id":"72505","title":"Parkhaus am Stachus","street":"Adolf-Kolping-Str.","sn":"10","lat":48.1381075,"lng":11.5630355,"r":4.67},{"id":"1224102","title":"Galeria Kaufhof Rotkreuzplatz","street":"Donnersbergerstr.","sn":null,"lat":48.15266616,"lng":11.53277065,"r":0},{"id":"153788","title":"Parkhaus am Hauptbahnhof","street":"Arnulfstr.","sn":"1","lat":48.141043557113,"lng":11.559701929572,"r":0},{"id":"121107","title":"Karstadt München Bahnhofplatz","street":"Bahnhofplatz","sn":"7","lat":48.140499,"lng":11.560844,"r":3},{"id":"121104","title":"Tiefgarage am Hauptbahnhof","street":"Bahnhofplatz","sn":"2","lat":48.14076,"lng":11.56061,"r":0},{"id":"121106","title":"Parkhaus an der Marsstraße","street":"Hirtenstr.","sn":"14","lat":48.142139,"lng":11.55854,"r":2},{"id":"121092","title":"Parkhaus Oberanger","street":"Oberanger","sn":"27","lat":48.134029,"lng":11.569986,"r":5},{"id":"121094","title":"Tiefgarage Stachus","street":"Herzog-Wilhelm-Str.","sn":"11","lat":48.137601,"lng":11.5667028,"r":4},{"id":"121097","title":"Parkhaus Elisenhof","street":"Luitpoldstr.","sn":"3","lat":48.1409303,"lng":11.5625947,"r":0},{"id":"121100","title":"Tiefgarage Hotel ibis City","street":"Dachauer Str.","sn":"21","lat":48.14403,"lng":11.55952,"r":0},{"id":"1217898","title":"Tiefgarage Oberpollinger","street":"Neuhauser Str.","sn":"18","lat":48.138771,"lng":11.56757,"r":0},{"id":"121087","title":"Stachus-Park-Garagen","street":"Karlsplatz","sn":"6","lat":48.13974,"lng":11.56641,"r":0},{"id":"121088","title":"Pschorr Garage","street":"Altheimer Eck","sn":"16","lat":48.137325,"lng":11.570128,"r":4},{"id":"121105","title":"Parkgarage Schranne München","street":"Prälat-Zistl-Str.","sn":"3","lat":48.134563,"lng":11.574459,"r":3.4},{"id":"121093","title":"City-Parkhaus Färbergraben","street":"Färbergraben","sn":"10","lat":48.1372976,"lng":11.571501,"r":2.75},{"id":"121096","title":"Marienplatz Großgarage","street":"Rindermarkt","sn":"16","lat":48.136227,"lng":11.574723,"r":2.3},{"id":"121108","title":"Parkgarage Böhringer","street":"Baaderstr.","sn":"6","lat":48.1330593,"lng":11.5810631,"r":5},{"id":"121099","title":"Parkgarage Rieger City","street":"Frauenstr.","sn":"38","lat":48.1345268,"lng":11.5806805,"r":2},{"id":"121101","title":"Parkgarage am Salvatorplatz","street":"Salvatorplatz","sn":"3","lat":48.142269,"lng":11.57519,"r":3.67},{"id":"121098","title":"Tiefgarage vor der Oper","street":"Max-Joseph-Platz","sn":"4","lat":48.14049,"lng":11.57764,"r":0},{"id":"121103","title":"Parkhaus am Hofbräuhaus","street":"Hochbrückenstr.","sn":"9","lat":48.137275367085,"lng":11.58140633504,"r":0},{"id":"1224057","title":"Parkhaus Holiday Inn/Motorama","street":"Hochstr.","sn":"3","lat":48.130607,"lng":11.589468,"r":0},{"id":"1224056","title":"Parkgarage Gasteig","street":"Rosenheimer Str.","sn":"5","lat":48.131005,"lng":11.590828,"r":0},{"id":"1224045","title":"Park One Hilton München City","street":"Rosenheimer Str.","sn":"15-17","lat":48.13017,"lng":11.59276,"r":0},{"id":"1224051","title":"Parkhaus Hofbräukeller","street":"Innere Wiener Str.","sn":"15","lat":48.13395,"lng":11.59439,"r":0},{"id":"1224061","title":"Karstadt am Nordbad","street":"Schleißheimer Str.","sn":null,"lat":48.1595259,"lng":11.5620762,"r":0},{"id":"1224047","title":"Park One Amalien-Passage","street":"Türkenstr.","sn":"84","lat":48.1517361,"lng":11.5771485,"r":0},{"id":"1224109","title":"Tiefgarage P&R Westfriedhof","street":"Orpheusstr.","sn":"1","lat":48.1708526,"lng":11.5285203,"r":0},{"id":"1224059","title":"Parkhaus Mediaworks","street":"Rosenheimer Str.","sn":"145","lat":48.1211213,"lng":11.6062601,"r":0},{"id":"1273627","title":"Parkgarage Autospeicher","street":"Atelierstr.","sn":null,"lat":48.124895,"lng":11.605819,"r":0},{"id":"1224108","title":"Tiefgarage P&R Moosach","street":"Memminger Platz","sn":null,"lat":48.1811,"lng":11.5051886,"r":0},{"id":"1224106","title":"Tiefgarage Innsbrucker Ring","street":"Bad-Schachener-Str.","sn":"41","lat":48.12051,"lng":11.6184996,"r":0},{"id":"161621","title":"daseinstein Parkhaus","street":"Bothestr.","sn":null,"lat":48.1361596,"lng":11.6131643,"r":0},{"id":"1260859","title":"daseinstein Tiefgarage","street":"Einsteinstr.","sn":"130","lat":48.13592611,"lng":11.61364808,"r":0},{"id":"1224060","title":"Karstadt Schwabing","street":"Franzstr.","sn":null,"lat":48.1609124,"lng":11.5872914,"r":0},{"id":"1224048","title":"Park One im MONA","street":"Pelkovenstr.","sn":"143-147","lat":48.1822449,"lng":11.5304177,"r":0},{"id":"1224046","title":"Park One Hilton München Park","street":"Am Tucherpark","sn":"7","lat":48.1531005,"lng":11.5990094,"r":0},{"id":"1224097","title":"Olympia-Einkaufszentrum","street":"Hanauer Str.","sn":"68","lat":48.18405,"lng":11.53224,"r":0},{"id":"1224062","title":"Parkhaus Schwabing","street":"Occamstr.","sn":"20","lat":48.1627,"lng":11.59031,"r":0},{"id":"1224043","title":"BMW Parkhaus Süd","street":"Petuelring","sn":"130","lat":48.17656677,"lng":11.56248346,"r":0},{"id":"1224100","title":"BMW Parkhaus Nordost","street":"Riesenfeldstr.","sn":null,"lat":48.18287998,"lng":11.56237884,"r":0},{"id":"1224099","title":"BMW Parkhaus Nordwest","street":"Moosacher Str.","sn":"61","lat":48.18579,"lng":11.55451,"r":0},{"id":"1289720","title":"Park One Schwabinger Tor","street":"Leopoldstr.","sn":null,"lat":48.1734243,"lng":11.5860777,"r":0},{"id":"1224098","title":"PEP Einkaufscenter","street":"Ollenhauerstr.","sn":"6","lat":48.1012,"lng":11.64349,"r":0},{"id":"1224091","title":"Parkhaus Rosenkavalierplatz","street":"Elektrastr.","sn":"3","lat":48.1528304,"lng":11.6214425,"r":0},{"id":"1224103","title":"Tiefgarage Hotel Marriott","street":"Berliner Str.","sn":"93","lat":48.17453,"lng":11.59262,"r":0},{"id":"1224055","title":"Tiefgarage Ibis/Suite Novotel","street":"Lyonel-Feininger-Str.","sn":"20","lat":48.1796264,"lng":11.5931016,"r":0},{"id":"1224111","title":"The M.Pire","street":"Marcel-Breuer-Str.","sn":"2","lat":48.181298,"lng":11.5970496,"r":0},{"id":"1224095","title":"BMW Parkhaus FIZ","street":"Knorrstr.","sn":"147","lat":48.1938086,"lng":11.5706652,"r":0},{"id":"1224094","title":"BMW Parkhaus Hufelandstr.","street":"Hufelandstr.","sn":"5","lat":48.1924141,"lng":11.5749566,"r":0},{"id":"1224049","title":"Park One im MIRA","street":"Schleißheimer Str.","sn":"506","lat":48.2131458,"lng":11.563606,"r":0},{"id":"1224052","title":"Tiefgarage MOC","street":"Lilienthalallee","sn":"40","lat":48.19784,"lng":11.61132,"r":0},{"id":"1224058","title":"Parkhaus Kieferngarten","street":"Kieferngartenstr.","sn":"14","lat":48.20206,"lng":11.6127,"r":0},{"id":"72297","title":"Tiefgarage Riem Arcaden","street":"Willy-Brandt-Platz","sn":"5","lat":48.1332324,"lng":11.6922217,"r":2},{"id":"1224054","title":"Parkhaus Messe München","street":"Paul-Henri-Spaak-Str.","sn":"6","lat":48.1393857,"lng":11.6903941,"r":0},{"id":"1224053","title":"Parkhaus P&R Fröttmaning","street":"Werner-Heisenberg-Allee","sn":"21","lat":48.21037,"lng":11.62024,"r":0},{"id":"1224050","title":"Parkhaus P&R Messestadt Ost","street":"Am Messefreigel.","sn":null,"lat":48.1358231,"lng":11.7059815,"r":0},{"id":"1224044","title":"Parkhaus Allianz Arena","street":"Werner-Heisenberg-Allee","sn":"25","lat":48.2186,"lng":11.62362,"r":0}];
+/* ══════════════════════════════════════
+   PARKHÄUSER (static data)
+══════════════════════════════════════ */
+const PLACES=[{title:"Tiefgarage P&R Fürstenried",street:"Neurieder Str.",sn:"40",lat:48.087114,lng:11.4847368,r:0},{title:"Parkhaus Audi Dome",street:"Siegenburger Str.",sn:"65",lat:48.12738543,lng:11.52276568,r:0},{title:"Parkhaus Laimer Platz",street:"Fürstenrieder Str.",sn:"62",lat:48.13591,lng:11.5026,r:0},{title:"Tiefgarage P&R Heimeranplatz",street:"Garmischer Str.",sn:"19",lat:48.1314008,lng:11.5309121,r:0},{title:"West 4",street:"Elsenheimerstr.",sn:"57",lat:48.13744,lng:11.52306,r:0},{title:"Parkhaus Euroguard",street:"Gollierstr.",sn:"6",lat:48.13580359,lng:11.54693858,r:5},{title:"Parkhaus Saturn",street:"Schwanthalerstr. 113",sn:null,lat:48.1376622,lng:11.5467751,r:0},{title:"Tiefgarage P&R Mangfallplatz",street:"Am Hollerbusch",sn:"22",lat:48.0953261,lng:11.5744451,r:0},{title:"Tiefgarage ZOB",street:"Bernhard-Wicki-Str.",sn:"11",lat:48.14248249,lng:11.54842869,r:0},{title:"CarPark Cristal",street:"Schwanthalerstr.",sn:"36",lat:48.13758,lng:11.55911,r:0},{title:"Parkgarage am Goethe Center",street:"Senefelderstr.",sn:"6",lat:48.1387,lng:11.5601,r:0},{title:"Sonnenhof-Garage",street:"Landwehrstr.",sn:"10",lat:48.1364089,lng:11.5632499,r:4.5},{title:"Parkgarage Senefelderstraße",street:"Senefelderstr.",sn:"7-13",lat:48.13876167,lng:11.56033949,r:0},{title:"Hopfenpost Parkhaus",street:"Hopfenstr.",sn:"6",lat:48.143337,lng:11.554503,r:3},{title:"Parkhaus am Stachus",street:"Adolf-Kolping-Str.",sn:"10",lat:48.1381075,lng:11.5630355,r:4.67},{title:"Galeria Kaufhof Rotkreuzplatz",street:"Donnersbergerstr.",sn:null,lat:48.15266616,lng:11.53277065,r:0},{title:"Parkhaus am Hauptbahnhof",street:"Arnulfstr.",sn:"1",lat:48.141043,lng:11.559701,r:0},{title:"Karstadt München Bahnhofplatz",street:"Bahnhofplatz",sn:"7",lat:48.140499,lng:11.560844,r:3},{title:"Tiefgarage am Hauptbahnhof",street:"Bahnhofplatz",sn:"2",lat:48.14076,lng:11.56061,r:0},{title:"Parkhaus an der Marsstraße",street:"Hirtenstr.",sn:"14",lat:48.142139,lng:11.55854,r:2},{title:"Parkhaus Oberanger",street:"Oberanger",sn:"27",lat:48.134029,lng:11.569986,r:5},{title:"Tiefgarage Stachus",street:"Herzog-Wilhelm-Str.",sn:"11",lat:48.137601,lng:11.5667028,r:4},{title:"Parkhaus Elisenhof",street:"Luitpoldstr.",sn:"3",lat:48.1409303,lng:11.5625947,r:0},{title:"Tiefgarage Hotel ibis City",street:"Dachauer Str.",sn:"21",lat:48.14403,lng:11.55952,r:0},{title:"Tiefgarage Oberpollinger",street:"Neuhauser Str.",sn:"18",lat:48.138771,lng:11.56757,r:0},{title:"Stachus-Park-Garagen",street:"Karlsplatz",sn:"6",lat:48.13974,lng:11.56641,r:0},{title:"Pschorr Garage",street:"Altheimer Eck",sn:"16",lat:48.137325,lng:11.570128,r:4},{title:"Parkgarage Schranne München",street:"Prälat-Zistl-Str.",sn:"3",lat:48.134563,lng:11.574459,r:3.4},{title:"City-Parkhaus Färbergraben",street:"Färbergraben",sn:"10",lat:48.1372976,lng:11.571501,r:2.75},{title:"Marienplatz Großgarage",street:"Rindermarkt",sn:"16",lat:48.136227,lng:11.574723,r:2.3},{title:"Parkgarage Böhringer",street:"Baaderstr.",sn:"6",lat:48.1330593,lng:11.5810631,r:5},{title:"Parkgarage Rieger City",street:"Frauenstr.",sn:"38",lat:48.1345268,lng:11.5806805,r:2},{title:"Parkgarage am Salvatorplatz",street:"Salvatorplatz",sn:"3",lat:48.142269,lng:11.57519,r:3.67},{title:"Tiefgarage vor der Oper",street:"Max-Joseph-Platz",sn:"4",lat:48.14049,lng:11.57764,r:0},{title:"Parkhaus am Hofbräuhaus",street:"Hochbrückenstr.",sn:"9",lat:48.137275,lng:11.58140,r:0},{title:"Parkhaus Holiday Inn/Motorama",street:"Hochstr.",sn:"3",lat:48.130607,lng:11.589468,r:0},{title:"Parkgarage Gasteig",street:"Rosenheimer Str.",sn:"5",lat:48.131005,lng:11.590828,r:0},{title:"Park One Hilton München City",street:"Rosenheimer Str.",sn:"15-17",lat:48.13017,lng:11.59276,r:0},{title:"Parkhaus Hofbräukeller",street:"Innere Wiener Str.",sn:"15",lat:48.13395,lng:11.59439,r:0},{title:"Karstadt am Nordbad",street:"Schleißheimer Str.",sn:null,lat:48.1595259,lng:11.5620762,r:0},{title:"Park One Amalien-Passage",street:"Türkenstr.",sn:"84",lat:48.1517361,lng:11.5771485,r:0},{title:"Tiefgarage P&R Westfriedhof",street:"Orpheusstr.",sn:"1",lat:48.1708526,lng:11.5285203,r:0},{title:"Parkhaus Mediaworks",street:"Rosenheimer Str.",sn:"145",lat:48.1211213,lng:11.6062601,r:0},{title:"Parkgarage Autospeicher",street:"Atelierstr.",sn:null,lat:48.124895,lng:11.605819,r:0},{title:"Tiefgarage P&R Moosach",street:"Memminger Platz",sn:null,lat:48.1811,lng:11.5051886,r:0},{title:"Tiefgarage Innsbrucker Ring",street:"Bad-Schachener-Str.",sn:"41",lat:48.12051,lng:11.6184996,r:0},{title:"daseinstein Parkhaus",street:"Bothestr.",sn:null,lat:48.1361596,lng:11.6131643,r:0},{title:"daseinstein Tiefgarage",street:"Einsteinstr.",sn:"130",lat:48.13592611,lng:11.61364808,r:0},{title:"Karstadt Schwabing",street:"Franzstr.",sn:null,lat:48.1609124,lng:11.5872914,r:0},{title:"Park One im MONA",street:"Pelkovenstr.",sn:"143-147",lat:48.1822449,lng:11.5304177,r:0},{title:"Park One Hilton München Park",street:"Am Tucherpark",sn:"7",lat:48.1531005,lng:11.5990094,r:0},{title:"Olympia-Einkaufszentrum",street:"Hanauer Str.",sn:"68",lat:48.18405,lng:11.53224,r:0},{title:"Parkhaus Schwabing",street:"Occamstr.",sn:"20",lat:48.1627,lng:11.59031,r:0},{title:"BMW Parkhaus Süd",street:"Petuelring",sn:"130",lat:48.17656677,lng:11.56248346,r:0},{title:"BMW Parkhaus Nordost",street:"Riesenfeldstr.",sn:null,lat:48.18287998,lng:11.56237884,r:0},{title:"BMW Parkhaus Nordwest",street:"Moosacher Str.",sn:"61",lat:48.18579,lng:11.55451,r:0},{title:"Park One Schwabinger Tor",street:"Leopoldstr.",sn:null,lat:48.1734243,lng:11.5860777,r:0},{title:"PEP Einkaufscenter",street:"Ollenhauerstr.",sn:"6",lat:48.1012,lng:11.64349,r:0},{title:"Parkhaus Rosenkavalierplatz",street:"Elektrastr.",sn:"3",lat:48.1528304,lng:11.6214425,r:0},{title:"Tiefgarage Hotel Marriott",street:"Berliner Str.",sn:"93",lat:48.17453,lng:11.59262,r:0},{title:"Tiefgarage Ibis/Suite Novotel",street:"Lyonel-Feininger-Str.",sn:"20",lat:48.1796264,lng:11.5931016,r:0},{title:"The M.Pire",street:"Marcel-Breuer-Str.",sn:"2",lat:48.181298,lng:11.5970496,r:0},{title:"BMW Parkhaus FIZ",street:"Knorrstr.",sn:"147",lat:48.1938086,lng:11.5706652,r:0},{title:"BMW Parkhaus Hufelandstr.",street:"Hufelandstr.",sn:"5",lat:48.1924141,lng:11.5749566,r:0},{title:"Park One im MIRA",street:"Schleißheimer Str.",sn:"506",lat:48.2131458,lng:11.563606,r:0},{title:"Tiefgarage MOC",street:"Lilienthalallee",sn:"40",lat:48.19784,lng:11.61132,r:0},{title:"Parkhaus Kieferngarten",street:"Kieferngartenstr.",sn:"14",lat:48.20206,lng:11.6127,r:0},{title:"Tiefgarage Riem Arcaden",street:"Willy-Brandt-Platz",sn:"5",lat:48.1332324,lng:11.6922217,r:2},{title:"Parkhaus Messe München",street:"Paul-Henri-Spaak-Str.",sn:"6",lat:48.1393857,lng:11.6903941,r:0},{title:"Parkhaus P&R Fröttmaning",street:"Werner-Heisenberg-Allee",sn:"21",lat:48.21037,lng:11.62024,r:0},{title:"Parkhaus P&R Messestadt Ost",street:"Am Messefreigel.",sn:null,lat:48.1358231,lng:11.7059815,r:0},{title:"Parkhaus Allianz Arena",street:"Werner-Heisenberg-Allee",sn:"25",lat:48.2186,lng:11.62362,r:0}];
 
-let parkMap = null, topChartInst = null, pFiltered = [...PLACES];
-
-function initParkhaeuser() {
-  const rated = PLACES.filter(p=>p.r>0);
-  const avg = rated.length ? (rated.reduce((s,p)=>s+p.r,0)/rated.length) : 0;
-  document.getElementById('p-rated').textContent = rated.length + ' / 74';
-  document.getElementById('p-avg').textContent = avg.toFixed(2) + ' ★';
-  document.getElementById('p-best').textContent = '5.00 ★';
-
-  if (!parkMap) {
-    parkMap = L.map('map-park').setView([48.155,11.575],11);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(parkMap);
-    function pc(r){return r===0?'#888780':r>=4.5?'#1D9E75':r>=3.5?'#378ADD':'#EF9F27';}
+let pMap=null,pChart=null,pFilt=[...PLACES];
+function initP(){
+  const rated=PLACES.filter(p=>p.r>0);
+  const avg=rated.length?(rated.reduce((s,p)=>s+p.r,0)/rated.length):0;
+  document.getElementById('p-rated').textContent=rated.length+' / 74';
+  document.getElementById('p-avg').textContent=avg.toFixed(2)+' ★';
+  if(!pMap){
+    pMap=L.map('map-park').setView([48.155,11.575],11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(pMap);
+    const pc=r=>r===0?'#888780':r>=4.5?'#1D9E75':r>=3.5?'#378ADD':'#EF9F27';
     PLACES.forEach(p=>{
-      const ic=L.divIcon({html:`<div style="width:11px;height:11px;border-radius:50%;background:${pc(p.r)};border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25);"></div>`,className:'',iconSize:[11,11],iconAnchor:[5.5,5.5]});
-      const addr = p.street+(p.sn?' '+p.sn:'');
-      const rt = p.r>0?`${'★'.repeat(Math.round(p.r))}${'☆'.repeat(5-Math.round(p.r))} ${p.r.toFixed(2)}`:'keine Bewertung';
-      L.marker([p.lat,p.lng],{icon:ic}).addTo(parkMap).bindPopup(`<div class="popup-title">${p.title}</div><div class="popup-sub">${addr}</div><div class="popup-badge">${rt}</div>`);
+      const ic=L.divIcon({html:`<div style="width:11px;height:11px;border-radius:50%;background:${pc(p.r)};border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)"></div>`,className:'',iconSize:[11,11],iconAnchor:[5.5,5.5]});
+      L.marker([p.lat,p.lng],{icon:ic}).addTo(pMap).bindPopup(`<div class="pu-title">${p.title}</div><div class="pu-sub">${p.street}${p.sn?' '+p.sn:''}</div><div>${p.r>0?'★'.repeat(Math.round(p.r))+'☆'.repeat(5-Math.round(p.r))+' '+p.r.toFixed(2):'keine Bewertung'}</div>`);
     });
     const leg=L.control({position:'bottomright'});
-    leg.onAdd=()=>{const d=L.DomUtil.create('div');d.innerHTML=`<div style="background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #e5e4de;font-size:11px;color:#444;line-height:2"><div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#1D9E75;margin-right:6px;vertical-align:middle"></span>≥ 4.5★</div><div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#378ADD;margin-right:6px;vertical-align:middle"></span>3.5–4.4★</div><div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#EF9F27;margin-right:6px;vertical-align:middle"></span>&lt; 3.5★</div><div><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#888780;margin-right:6px;vertical-align:middle"></span>keine</div></div>`;return d;};
-    leg.addTo(parkMap);
-    setTimeout(()=>parkMap.invalidateSize(),100);
+    leg.onAdd=()=>{const d=L.DomUtil.create('div','map-legend');d.innerHTML='<span class="leg-dot" style="background:#1D9E75"></span>≥4.5★<br><span class="leg-dot" style="background:#378ADD"></span>3.5–4.4★<br><span class="leg-dot" style="background:#EF9F27"></span>&lt;3.5★<br><span class="leg-dot" style="background:#888780"></span>keine';return d;};
+    leg.addTo(pMap);
+    setTimeout(()=>pMap.invalidateSize(),100);
   }
-
-  if (!topChartInst) {
+  if(!pChart){
     const top10=[...PLACES].filter(p=>p.r>0).sort((a,b)=>b.r-a.r).slice(0,10);
-    topChartInst=new Chart(document.getElementById('topChart'),{type:'bar',data:{labels:top10.map(p=>p.title.length>24?p.title.slice(0,22)+'…':p.title),datasets:[{label:'Bewertung',data:top10.map(p=>p.r),backgroundColor:top10.map(p=>p.r>=4.5?'#1D9E75':p.r>=3.5?'#378ADD':'#EF9F27'),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:5,ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:11},color:'#444'},grid:{display:false}}}}});
+    pChart=new Chart(document.getElementById('topChart'),{type:'bar',data:{labels:top10.map(p=>p.title.length>24?p.title.slice(0,22)+'…':p.title),datasets:[{label:'Bewertung',data:top10.map(p=>p.r),backgroundColor:top10.map(p=>p.r>=4.5?'#1D9E75':p.r>=3.5?'#378ADD':'#EF9F27'),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:5,ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:11},color:'#444'},grid:{display:false}}}}});
   }
-  renderParkhaeuser();
+  renderP();
 }
-
-function filterParkhaeuser() {
+function filterP(){
   const q=document.getElementById('p-search').value.toLowerCase();
-  const rf=document.getElementById('p-rfilter').value;
-  pFiltered=PLACES.filter(p=>{
+  const rf=document.getElementById('p-rf').value;
+  pFilt=PLACES.filter(p=>{
     const mt=p.title.toLowerCase().includes(q)||p.street.toLowerCase().includes(q);
-    let mr=true;
-    if(rf==='rated')mr=p.r>0;
-    else if(rf==='5')mr=p.r>=5;
-    else if(rf==='4')mr=p.r>=4;
-    else if(rf==='3')mr=p.r>=3;
+    let mr=true;if(rf==='rated')mr=p.r>0;else if(rf==='5')mr=p.r>=5;else if(rf==='4')mr=p.r>=4;else if(rf==='3')mr=p.r>=3;
     return mt&&mr;
-  });
-  renderParkhaeuser();
+  });renderP();
+}
+function renderP(){
+  const s=r=>r===0?'<span class="badge b-gray">keine</span>':`<span class="stars">${'★'.repeat(Math.round(r))}${'☆'.repeat(5-Math.round(r))}</span> ${r.toFixed(2)}`;
+  document.getElementById('p-tbody').innerHTML=pFilt.map(p=>`<tr><td title="${p.title}">${p.title}</td><td>${p.street}${p.sn?' '+p.sn:''}</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</td><td>${s(p.r)}</td></tr>`).join('');
+  document.getElementById('p-cnt').textContent=`${pFilt.length} von 74 Einträgen`;
 }
 
-function renderParkhaeuser() {
-  const s=r=>r===0?'<span class="badge badge-none">keine</span>':`<span class="stars">${'★'.repeat(Math.round(r))}${'☆'.repeat(5-Math.round(r))}</span> ${r.toFixed(2)}`;
-  document.getElementById('p-tbody').innerHTML=pFiltered.map(p=>{
-    const a=p.street+(p.sn?' '+p.sn:'');
-    return`<tr><td title="${p.title}">${p.title}</td><td title="${a}">${a}</td><td style="font-family:monospace;font-size:11px;color:var(--muted)">${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</td><td>${s(p.r)}</td></tr>`;
-  }).join('');
-  document.getElementById('p-count').textContent=`${pFiltered.length} von 74 Einträgen`;
-}
-
-/* ══════════════════════════════════
+/* ══════════════════════════════════════
    MELDUNGEN
-══════════════════════════════════ */
-let meldData=[], meldFiltered=[], meldMap=null, catChartInst=null, statusChartInst=null, timeChartInst=null, meldInited=false;
-
-async function initMeldungen() {
-  if(meldInited) return;
-  meldInited=true;
-  document.getElementById('m-loading').style.display='flex';
-  document.getElementById('m-content').style.display='none';
-  document.getElementById('m-error').style.display='none';
-
-  try {
-    const res = await fetch('https://machmuenchenbesser.de/georeport/v2/requests.json?start_date=2025-01-01');
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const json = await res.json();
-    meldData = Array.isArray(json) ? json : (json.service_requests || json.requests || []);
-    buildMeldungen();
-  } catch(e) {
-    meldInited=false;
-    document.getElementById('m-loading').style.display='none';
-    document.getElementById('m-error').style.display='block';
-    document.getElementById('m-error').innerHTML=`
-      <strong>API konnte nicht geladen werden.</strong> Dies liegt meist an CORS-Einschränkungen im Browser.<br><br>
-      <strong>Lösung:</strong> Lade die Datei auf einen Webserver hoch (GitHub Pages, Netlify) — dort funktioniert die API problemlos.<br>
-      Alternativ: Öffne die Datei über einen lokalen Server (<code>npx serve .</code> oder VS Code Live Server).
-      <br><br><span style="font-size:11px;color:#854F0B">Technischer Fehler: ${e.message}</span>`;
+══════════════════════════════════════ */
+let mData=[],mFilt=[],mMap=null,mCharts={};
+async function initM(){
+  try{
+    const res=await fetch('https://machmuenchenbesser.de/georeport/v2/requests.json?start_date=2025-01-01');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const j=await res.json();
+    mData=Array.isArray(j)?j:(j.service_requests||j.requests||[]);
+    buildM();
+  }catch(e){
+    document.getElementById('m-load').style.display='none';
+    document.getElementById('m-err').style.display='block';
+    document.getElementById('m-err').innerHTML=`<strong>API nicht erreichbar.</strong> Lade die Datei auf GitHub Pages oder Netlify hoch, um die Live-API zu nutzen. Lokal: <code>npx serve .</code><br><small>${e.message}</small>`;
   }
 }
-
-function buildMeldungen() {
-  document.getElementById('m-loading').style.display='none';
-  document.getElementById('m-content').style.display='block';
-
-  const total=meldData.length;
-  const open=meldData.filter(m=>m.status==='open').length;
-  const closed=total-open;
-  const cats=[...new Set(meldData.map(m=>m.service_name||'Unbekannt'))];
-
-  document.getElementById('m-total').textContent=total.toLocaleString('de');
+function buildM(){
+  document.getElementById('m-load').style.display='none';
+  document.getElementById('m-body').style.display='block';
+  const open=mData.filter(m=>m.status==='open').length;
+  const cats=[...new Set(mData.map(m=>m.service_name||'Unbekannt'))];
+  document.getElementById('m-tot').textContent=mData.length.toLocaleString('de');
   document.getElementById('m-open').textContent=open.toLocaleString('de');
-  document.getElementById('m-closed').textContent=closed.toLocaleString('de');
+  document.getElementById('m-cls').textContent=(mData.length-open).toLocaleString('de');
   document.getElementById('m-cats').textContent=cats.length;
-
-  // Map
-  if(!meldMap) {
-    meldMap=L.map('map-meld').setView([48.155,11.575],12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(meldMap);
+  if(!mMap){
+    mMap=L.map('map-meld').setView([48.155,11.575],12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(mMap);
+    mData.filter(m=>m.lat&&m.long).forEach(m=>{
+      const col=m.status==='open'?'#EF9F27':'#1D9E75';
+      const ic=L.divIcon({html:`<div style="width:8px;height:8px;border-radius:50%;background:${col};border:1.5px solid #fff;opacity:.85"></div>`,className:'',iconSize:[8,8],iconAnchor:[4,4]});
+      L.marker([parseFloat(m.lat),parseFloat(m.long)],{icon:ic}).addTo(mMap).bindPopup(`<div class="pu-title">${m.service_name||'Meldung'}</div><div class="pu-sub">${m.address||''}</div>`);
+    });
+    setTimeout(()=>mMap.invalidateSize(),100);
   }
-  meldData.filter(m=>m.lat&&m.long).forEach(m=>{
-    const col=m.status==='open'?'#EF9F27':'#1D9E75';
-    const ic=L.divIcon({html:`<div style="width:8px;height:8px;border-radius:50%;background:${col};border:1.5px solid #fff;opacity:.85;"></div>`,className:'',iconSize:[8,8],iconAnchor:[4,4]});
-    L.marker([parseFloat(m.lat),parseFloat(m.long)],{icon:ic}).addTo(meldMap)
-      .bindPopup(`<div class="popup-title">${m.service_name||'Meldung'}</div><div class="popup-sub">${m.address||''}</div><div class="popup-badge">${m.status==='open'?'<span style="color:#854F0B">offen</span>':'<span style="color:#3B6D11">geschlossen</span>'}</div>`);
-  });
-  setTimeout(()=>meldMap.invalidateSize(),100);
-
-  // Category chart
-  const catCounts={};
-  meldData.forEach(m=>{const c=m.service_name||'Unbekannt';catCounts[c]=(catCounts[c]||0)+1;});
-  const sorted=Object.entries(catCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  if(catChartInst) catChartInst.destroy();
-  catChartInst=new Chart(document.getElementById('catChart'),{type:'bar',data:{labels:sorted.map(([k])=>k.length>26?k.slice(0,24)+'…':k),datasets:[{label:'Meldungen',data:sorted.map(([,v])=>v),backgroundColor:'#378ADD',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:11},color:'#444'},grid:{display:false}}}}});
-
-  // Status donut
-  if(statusChartInst) statusChartInst.destroy();
-  statusChartInst=new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['Offen','Geschlossen'],datasets:[{data:[open,closed],backgroundColor:['#EF9F27','#1D9E75'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:12},color:'#444',padding:16}}}}});
-
-  // Time chart
-  const monthly={};
-  meldData.forEach(m=>{
-    if(!m.requested_datetime) return;
-    const d=new Date(m.requested_datetime);
-    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    monthly[key]=(monthly[key]||0)+1;
-  });
-  const mkeys=Object.keys(monthly).sort();
-  if(timeChartInst) timeChartInst.destroy();
-  timeChartInst=new Chart(document.getElementById('timeChart'),{type:'bar',data:{labels:mkeys.map(k=>{const[y,m]=k.split('-');return ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][parseInt(m)-1]+' '+y.slice(2);}),datasets:[{label:'Meldungen',data:mkeys.map(k=>monthly[k]),backgroundColor:'#534AB7',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11},color:'#888780',autoSkip:false,maxRotation:45},grid:{display:false}},y:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}}}}});
-
-  // Category filter dropdown
-  const sel=document.getElementById('m-cfilter');
+  const cc={};mData.forEach(m=>{const c=m.service_name||'Unbekannt';cc[c]=(cc[c]||0)+1;});
+  const top10=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  if(mCharts.cat)mCharts.cat.destroy();
+  mCharts.cat=new Chart(document.getElementById('catChart'),{type:'bar',data:{labels:top10.map(([k])=>k.length>26?k.slice(0,24)+'…':k),datasets:[{label:'Meldungen',data:top10.map(([,v])=>v),backgroundColor:'#378ADD',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:11},color:'#444'},grid:{display:false}}}}});
+  if(mCharts.status)mCharts.status.destroy();
+  mCharts.status=new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['Offen','Geschlossen'],datasets:[{data:[open,mData.length-open],backgroundColor:['#EF9F27','#1D9E75'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:12},color:'#444',padding:14}}}}});
+  const mo={};mData.forEach(m=>{if(!m.requested_datetime)return;const d=new Date(m.requested_datetime);const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;mo[k]=(mo[k]||0)+1;});
+  const mk=Object.keys(mo).sort();
+  if(mCharts.time)mCharts.time.destroy();
+  mCharts.time=new Chart(document.getElementById('timeChart'),{type:'bar',data:{labels:mk.map(k=>{const[y,m]=k.split('-');return['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][parseInt(m)-1]+' '+y.slice(2);}),datasets:[{label:'Meldungen',data:mk.map(k=>mo[k]),backgroundColor:'#534AB7',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10},color:'#888780',autoSkip:false,maxRotation:45},grid:{display:false}},y:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}}}}});
+  const sel=document.getElementById('m-cf');
   cats.sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
-
-  meldFiltered=[...meldData];
-  renderMeldungen();
+  mFilt=[...mData];renderM();
 }
-
-function filterMeldungen() {
+function filterM(){
   const q=document.getElementById('m-search').value.toLowerCase();
-  const sf=document.getElementById('m-sfilter').value;
-  const cf=document.getElementById('m-cfilter').value;
-  meldFiltered=meldData.filter(m=>{
+  const sf=document.getElementById('m-sf').value,cf=document.getElementById('m-cf').value;
+  mFilt=mData.filter(m=>{
     const mt=(m.service_name||'').toLowerCase().includes(q)||(m.address||'').toLowerCase().includes(q)||(m.description||'').toLowerCase().includes(q);
-    const ms=sf==='all'||m.status===sf;
-    const mc=cf==='all'||(m.service_name||'Unbekannt')===cf;
-    return mt&&ms&&mc;
-  });
-  renderMeldungen();
+    return mt&&(sf==='all'||m.status===sf)&&(cf==='all'||(m.service_name||'Unbekannt')===cf);
+  });renderM();
+}
+function renderM(){
+  document.getElementById('m-tbody').innerHTML=mFilt.slice(0,500).map(m=>{
+    const dt=m.requested_datetime?new Date(m.requested_datetime).toLocaleDateString('de-DE'):'—';
+    const st=m.status==='open'?'<span class="badge b-amber">offen</span>':'<span class="badge b-green">geschlossen</span>';
+    const cat=m.service_name||'—',addr=m.address||'—';
+    return`<tr><td style="color:var(--muted);font-family:monospace">${m.service_request_id||'—'}</td><td title="${cat}">${cat.length>28?cat.slice(0,26)+'…':cat}</td><td title="${addr}">${addr.length>34?addr.slice(0,32)+'…':addr}</td><td>${dt}</td><td>${st}</td></tr>`;
+  }).join('');
+  document.getElementById('m-cnt').textContent=`${Math.min(mFilt.length,500).toLocaleString('de')} von ${mFilt.length.toLocaleString('de')} Einträgen`;
 }
 
-function renderMeldungen() {
-  document.getElementById('m-tbody').innerHTML=meldFiltered.slice(0,500).map(m=>{
-    const dt=m.requested_datetime?new Date(m.requested_datetime).toLocaleDateString('de-DE'):'—';
-    const st=m.status==='open'?'<span class="badge badge-open">offen</span>':'<span class="badge badge-closed">geschlossen</span>';
-    const cat=(m.service_name||'—');
-    const addr=(m.address||'—');
-    return`<tr><td style="color:var(--muted);font-family:monospace">${m.service_request_id||'—'}</td><td title="${cat}">${cat.length>28?cat.slice(0,26)+'…':cat}</td><td title="${addr}">${addr.length>32?addr.slice(0,30)+'…':addr}</td><td>${dt}</td><td>${st}</td></tr>`;
+/* ══════════════════════════════════════
+   PARKRAUM
+══════════════════════════════════════ */
+let prData=[],prFilt=[],prMap=null,prCharts={};
+async function initPR(){
+  try{
+    const res=await fetch('https://geoportal.muenchen.de/geoserver/mor_wfs/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=mor_wfs:ruhver_prm_gebiete_poly&outputFormat=application/json');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const j=await res.json();
+    prData=j.features||[];
+    buildPR();
+  }catch(e){
+    document.getElementById('pr-load').style.display='none';
+    document.getElementById('pr-err').style.display='block';
+    document.getElementById('pr-err').innerHTML=`<strong>API nicht erreichbar.</strong> Bitte online hosten (GitHub Pages / Netlify). <small>${e.message}</small>`;
+  }
+}
+function convertPoly(coords){
+  return coords.map(ring=>ring.map(([x,y])=>{const r=utm2wgs(x,y);return[r.lat,r.lng];}));
+}
+function buildPR(){
+  document.getElementById('pr-load').style.display='none';
+  document.getElementById('pr-body').style.display='block';
+  const props=prData.map(f=>f.properties);
+  const active=props.filter(p=>(p.status||'').toLowerCase().includes('betrieb')).length;
+  const plan=props.filter(p=>(p.status||'').toLowerCase().includes('plan')||(p.status||'').toLowerCase().includes('vorbereitung')).length;
+  const utyps=[...new Set(props.map(p=>p.ueberwachung||'unbekannt'))];
+  document.getElementById('pr-tot').textContent=prData.length;
+  document.getElementById('pr-act').textContent=active;
+  document.getElementById('pr-plan').textContent=plan;
+  document.getElementById('pr-utyp').textContent=utyps.length;
+
+  if(!prMap){
+    prMap=L.map('map-pr').setView([48.155,11.575],12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(prMap);
+    const statusColor=s=>{
+      const sl=(s||'').toLowerCase();
+      if(sl.includes('betrieb'))return{fill:'#534AB7',stroke:'#3C3489'};
+      if(sl.includes('plan')||sl.includes('vorbereitung'))return{fill:'#EF9F27',stroke:'#BA7517'};
+      return{fill:'#888780',stroke:'#5F5E5A'};
+    };
+    const bounds=[];
+    prData.forEach(f=>{
+      const p=f.properties;
+      const geo=f.geometry;
+      if(!geo)return;
+      const col=statusColor(p.status);
+      let layer;
+      if(geo.type==='Polygon'){
+        const rings=convertPoly(geo.coordinates);
+        layer=L.polygon(rings,{color:col.stroke,fillColor:col.fill,fillOpacity:0.35,weight:1.5});
+        rings[0].forEach(c=>bounds.push(c));
+      } else if(geo.type==='MultiPolygon'){
+        const allRings=geo.coordinates.map(poly=>convertPoly(poly));
+        layer=L.polygon(allRings.flat(),{color:col.stroke,fillColor:col.fill,fillOpacity:0.35,weight:1.5});
+        allRings.flat().flat().forEach(c=>bounds.push(c));
+      }
+      if(layer){
+        const link=p.einzeluebersicht_link?`<br><a href="${p.einzeluebersicht_link}" target="_blank" style="color:#378ADD;font-size:11px">Einzelübersicht ↗</a>`:'';
+        layer.bindPopup(`<div class="pu-title">${p.name||'Gebiet'}</div><div class="pu-sub">${p.massnahme||''}</div><div style="font-size:11px">Status: ${p.status||'—'}<br>Überwachung: ${p.ueberwachung||'—'}<br>Eröffnung: ${p.eroeffnung||'—'}${link}</div>`);
+        layer.addTo(prMap);
+      }
+    });
+    if(bounds.length)try{prMap.fitBounds(bounds,{padding:[20,20]});}catch(e){}
+    const leg=L.control({position:'bottomright'});
+    leg.onAdd=()=>{const d=L.DomUtil.create('div','map-legend');d.innerHTML='<span class="leg-dot" style="background:#534AB7"></span>In Betrieb<br><span class="leg-dot" style="background:#EF9F27"></span>In Planung<br><span class="leg-dot" style="background:#888780"></span>Sonstige';return d;};
+    leg.addTo(prMap);
+    setTimeout(()=>prMap.invalidateSize(),100);
+  }
+
+  const sc={};props.forEach(p=>{const s=p.status||'Unbekannt';sc[s]=(sc[s]||0)+1;});
+  const cols=['#534AB7','#EF9F27','#1D9E75','#888780','#378ADD','#D85A30'];
+  const sk=Object.keys(sc);
+  if(prCharts.status)prCharts.status.destroy();
+  prCharts.status=new Chart(document.getElementById('prStatusChart'),{type:'doughnut',data:{labels:sk,datasets:[{data:sk.map(k=>sc[k]),backgroundColor:sk.map((_,i)=>cols[i%cols.length]),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11},color:'#444',padding:10}}}}});
+
+  const uc={};props.forEach(p=>{const u=p.ueberwachung||'Unbekannt';uc[u]=(uc[u]||0)+1;});
+  const uk=Object.keys(uc);
+  if(prCharts.ueb)prCharts.ueb.destroy();
+  prCharts.ueb=new Chart(document.getElementById('prUebChart'),{type:'bar',data:{labels:uk,datasets:[{label:'Gebiete',data:uk.map(k=>uc[k]),backgroundColor:'#534AB7',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11},color:'#888780'},grid:{display:false}},y:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}}}}});
+
+  const ssf=document.getElementById('pr-sf');
+  [...new Set(props.map(p=>p.status||'Unbekannt'))].sort().forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;ssf.appendChild(o);});
+  const usf=document.getElementById('pr-uf');
+  utyps.sort().forEach(u=>{const o=document.createElement('option');o.value=u;o.textContent=u;usf.appendChild(o);});
+  prFilt=[...prData];renderPR();
+}
+function filterPR(){
+  const q=document.getElementById('pr-search').value.toLowerCase();
+  const sf=document.getElementById('pr-sf').value,uf=document.getElementById('pr-uf').value;
+  prFilt=prData.filter(f=>{
+    const p=f.properties;
+    const mt=(p.name||'').toLowerCase().includes(q);
+    return mt&&(sf==='all'||(p.status||'Unbekannt')===sf)&&(uf==='all'||(p.ueberwachung||'unbekannt')===uf);
+  });renderPR();
+}
+function renderPR(){
+  const sb=s=>{const sl=(s||'').toLowerCase();if(sl.includes('betrieb'))return'<span class="badge b-purple">in Betrieb</span>';if(sl.includes('plan')||sl.includes('vorbereitung'))return'<span class="badge b-amber">Planung</span>';return'<span class="badge b-gray">'+s+'</span>';};
+  document.getElementById('pr-tbody').innerHTML=prFilt.map(f=>{
+    const p=f.properties;
+    const link=p.einzeluebersicht_link?`<a href="${p.einzeluebersicht_link}" target="_blank" style="color:var(--accent);font-size:11px">PDF ↗</a>`:'';
+    return`<tr><td title="${p.name||''}">${p.name||'—'}</td><td title="${p.massnahme||''}">${(p.massnahme||'—').length>30?(p.massnahme||'—').slice(0,28)+'…':p.massnahme||'—'}</td><td>${p.ueberwachung||'—'}</td><td>${p.eroeffnung||'—'} ${link}</td><td>${sb(p.status)}</td></tr>`;
   }).join('');
-  const total=meldFiltered.length;
-  document.getElementById('m-count').textContent=`${Math.min(total,500).toLocaleString('de')} von ${total.toLocaleString('de')} Einträgen angezeigt`;
+  document.getElementById('pr-cnt').textContent=`${prFilt.length} von ${prData.length} Gebieten`;
+}
+
+/* ══════════════════════════════════════
+   GLASCONTAINER
+══════════════════════════════════════ */
+let gData=[],gMap=null,gCharts={};
+async function initG(){
+  try{
+    const res=await fetch('https://geoportal.muenchen.de/geoserver/gsm_wfs/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=gsm_wfs:awm_container_barrierefrei&maxFeatures=50&outputFormat=application/json');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const j=await res.json();
+    gData=j.features||[];
+    buildG();
+  }catch(e){
+    document.getElementById('g-load').style.display='none';
+    document.getElementById('g-err').style.display='block';
+    document.getElementById('g-err').innerHTML=`<strong>API nicht erreichbar.</strong> Bitte online hosten. <small>${e.message}</small>`;
+  }
+}
+function buildG(){
+  document.getElementById('g-load').style.display='none';
+  document.getElementById('g-body').style.display='block';
+  const props=gData.map(f=>f.properties);
+  document.getElementById('g-tot').textContent=gData.length;
+  document.getElementById('g-br').textContent=props.filter(p=>p.glas_braun==1).length;
+  document.getElementById('g-gr').textContent=props.filter(p=>p.glas_gruen==1).length;
+  document.getElementById('g-wh').textContent=props.filter(p=>p.glas_weiss==1).length;
+
+  if(!gMap){
+    gMap=L.map('map-glas').setView([48.155,11.575],12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(gMap);
+    const bounds=[];
+    gData.forEach(f=>{
+      const coords=f.geometry.coordinates;
+      const wgs=utm2wgs(coords[0],coords[1]);
+      bounds.push([wgs.lat,wgs.lng]);
+      const farben=[];
+      if(f.properties.glas_braun==1)farben.push('<span style="color:#854F0B">Braun</span>');
+      if(f.properties.glas_gruen==1)farben.push('<span style="color:#3B6D11">Grün</span>');
+      if(f.properties.glas_weiss==1)farben.push('<span style="color:#5F5E5A">Weiß</span>');
+      const ic=L.divIcon({html:`<div style="width:14px;height:14px;border-radius:50%;background:#1D9E75;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,className:'',iconSize:[14,14],iconAnchor:[7,7]});
+      L.marker([wgs.lat,wgs.lng],{icon:ic}).addTo(gMap).bindPopup(`<div class="pu-title">${f.properties.adresse||'Glascontainer'}</div><div class="pu-sub">Barrierefrei</div><div style="font-size:12px">${farben.join(' · ')}</div>`);
+    });
+    if(bounds.length)try{gMap.fitBounds(bounds,{padding:[40,40],maxZoom:14});}catch(e){}
+    setTimeout(()=>gMap.invalidateSize(),100);
+  }
+
+  const typeLabels=['Braunglas','Grünglas','Weißglas'];
+  const typeCounts=[props.filter(p=>p.glas_braun==1).length,props.filter(p=>p.glas_gruen==1).length,props.filter(p=>p.glas_weiss==1).length];
+  if(gCharts.type)gCharts.type.destroy();
+  gCharts.type=new Chart(document.getElementById('glasTypeChart'),{type:'bar',data:{labels:typeLabels,datasets:[{label:'Standorte',data:typeCounts,backgroundColor:['#BA7517','#3B6D11','#888780'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:12},color:'#444'},grid:{display:false}},y:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(0,0,0,.06)'}}}}});
+
+  const combos={};
+  gData.forEach(f=>{
+    const p=f.properties;
+    const k=[p.glas_braun==1?'B':'',p.glas_gruen==1?'G':'',p.glas_weiss==1?'W':''].filter(Boolean).join('+');
+    combos[k]=(combos[k]||0)+1;
+  });
+  const ck=Object.keys(combos);
+  const comboLabels={'B':'Nur Braun','G':'Nur Grün','W':'Nur Weiß','B+G':'Braun+Grün','B+W':'Braun+Weiß','G+W':'Grün+Weiß','B+G+W':'Alle drei'};
+  if(gCharts.combo)gCharts.combo.destroy();
+  gCharts.combo=new Chart(document.getElementById('glasComboChart'),{type:'doughnut',data:{labels:ck.map(k=>comboLabels[k]||k),datasets:[{data:ck.map(k=>combos[k]),backgroundColor:['#BA7517','#3B6D11','#888780','#1D9E75','#EF9F27','#534AB7','#378ADD'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11},color:'#444',padding:8}}}}});
+
+  const check=v=>v==1?'<span class="badge b-green">✓</span>':'<span class="badge b-gray">–</span>';
+  document.getElementById('g-tbody').innerHTML=gData.map(f=>{
+    const p=f.properties;
+    return`<tr><td title="${p.adresse||''}">${p.adresse||'—'}</td><td>${check(p.glas_braun)}</td><td>${check(p.glas_gruen)}</td><td>${check(p.glas_weiss)}</td></tr>`;
+  }).join('');
+  document.getElementById('g-cnt').textContent=`${gData.length} Standorte`;
 }
 </script>
 </body>
