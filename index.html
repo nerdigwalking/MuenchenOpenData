@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Münchner Parkhäuser – Dashboard</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f2; color: #1a1a18; min-height: 100vh; }
+  header { background: #fff; border-bottom: 1px solid #e5e4de; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  header h1 { font-size: 18px; font-weight: 500; }
+  header span { font-size: 13px; color: #888780; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .metric { background: #fff; border: 1px solid #e5e4de; border-radius: 10px; padding: 16px; }
+  .metric-label { font-size: 12px; color: #888780; margin-bottom: 4px; }
+  .metric-value { font-size: 24px; font-weight: 500; }
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .card { background: #fff; border: 1px solid #e5e4de; border-radius: 12px; padding: 20px; }
+  .card-title { font-size: 12px; font-weight: 500; color: #888780; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 14px; }
+  #map { height: 380px; border-radius: 8px; border: 1px solid #e5e4de; }
+  .chart-wrap { position: relative; height: 340px; }
+  .full-card { background: #fff; border: 1px solid #e5e4de; border-radius: 12px; padding: 20px; }
+  .search-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: center; }
+  .search-row input, .search-row select { font-size: 14px; padding: 8px 12px; border: 1px solid #d3d1c7; border-radius: 8px; outline: none; background: #fafaf8; color: #1a1a18; }
+  .search-row input { flex: 1; }
+  .search-row input:focus, .search-row select:focus { border-color: #378ADD; background: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  th { text-align: left; font-size: 11px; font-weight: 500; color: #888780; border-bottom: 1px solid #e5e4de; padding: 8px 8px 10px; letter-spacing: 0.03em; text-transform: uppercase; }
+  td { padding: 10px 8px; border-bottom: 1px solid #f0efea; color: #1a1a18; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafaf8; }
+  .table-wrap { max-height: 360px; overflow-y: auto; }
+  .stars { color: #BA7517; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 11px; font-weight: 500; }
+  .badge-rated { background: #EAF3DE; color: #3B6D11; }
+  .badge-none { background: #F1EFE8; color: #888780; }
+  .table-footer { margin-top: 10px; font-size: 12px; color: #888780; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: #888780; margin-bottom: 10px; flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .leaflet-popup-content-wrapper { border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .popup-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+  .popup-addr { font-size: 12px; color: #888780; margin-bottom: 6px; }
+  .popup-rating { font-size: 13px; }
+  @media (max-width: 768px) {
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .main-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <h1>Münchner Parkhäuser</h1>
+  <span>Open Data – Stadt München · 74 Standorte</span>
+</header>
+
+<div class="container">
+
+  <div class="metric-grid">
+    <div class="metric">
+      <div class="metric-label">Parkhäuser gesamt</div>
+      <div class="metric-value" id="m-total">74</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Mit Bewertung</div>
+      <div class="metric-value" id="m-rated">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Ø Bewertung</div>
+      <div class="metric-value" id="m-avg">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Bestbewertet</div>
+      <div class="metric-value" id="m-best">—</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <div class="card-title">Karte aller Standorte</div>
+      <div id="map"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top 10 nach Bewertung</div>
+      <div class="chart-wrap">
+        <canvas id="topChart" role="img" aria-label="Horizontales Balkendiagramm der 10 best bewerteten Parkhäuser">Top-Parkhäuser.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-card">
+    <div class="card-title">Alle Standorte</div>
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Name oder Straße suchen…" oninput="filterTable()">
+      <select id="ratingFilter" onchange="filterTable()">
+        <option value="all">Alle Bewertungen</option>
+        <option value="rated">Nur bewertet</option>
+        <option value="5">★ 5.0</option>
+        <option value="4">★ 4.0+</option>
+        <option value="3">★ 3.0+</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:38%">Name</th>
+            <th style="width:30%">Adresse</th>
+            <th style="width:16%">Koordinaten</th>
+            <th style="width:16%">Bewertung</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div class="table-footer" id="tableCount"></div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const places = [{"id":"1224104","title":"Tiefgarage P&R Fürstenried","street":"Neurieder Str.","streetNumber":"40","lat":48.087114,"lng":11.4847368,"rating":0},{"id":"1253403","title":"Parkhaus Audi Dome","street":"Siegenburger Str.","streetNumber":"65","lat":48.12738543,"lng":11.52276568,"rating":0},{"id":"1253402","title":"Parkhaus Laimer Platz","street":"Fürstenrieder Str.","streetNumber":"62","lat":48.13591,"lng":11.5026,"rating":0},{"id":"1224105","title":"Tiefgarage P&R Heimeranplatz","street":"Garmischer Str.","streetNumber":"19","lat":48.1314008,"lng":11.5309121,"rating":0},{"id":"1224110","title":"West 4","street":"Elsenheimerstr.","streetNumber":"57","lat":48.13744,"lng":11.52306,"rating":0},{"id":"1250726","title":"Parkhaus Euroguard","street":"Gollierstr.","streetNumber":"6","lat":48.13580359,"lng":11.54693858,"rating":5},{"id":"23503","title":"Parkhaus Saturn – Bavaria Parkgaragen","street":"Schwanthalerstr. 113","streetNumber":null,"lat":48.1376622,"lng":11.5467751,"rating":0},{"id":"1224107","title":"Tiefgarage P&R Mangfallplatz","street":"Am Hollerbusch","streetNumber":"22","lat":48.0953261,"lng":11.5744451,"rating":0},{"id":"1253404","title":"Tiefgarage ZOB","street":"Bernhard-Wicki-Str.","streetNumber":"11","lat":48.14248249,"lng":11.54842869,"rating":0},{"id":"121102","title":"CarPark Cristal","street":"Schwanthalerstr.","streetNumber":"36","lat":48.13758,"lng":11.55911,"rating":0},{"id":"121091","title":"Parkgarage am Goethe Center","street":"Senefelderstr.","streetNumber":"6","lat":48.1387,"lng":11.5601,"rating":0},{"id":"121095","title":"Sonnenhof-Garage","street":"Landwehrstr.","streetNumber":"10","lat":48.1364089,"lng":11.5632499,"rating":4.5},{"id":"63679","title":"Parkgarage Senefelderstraße","street":"Senefelderstr.","streetNumber":"7-13","lat":48.13876167,"lng":11.56033949,"rating":0},{"id":"121090","title":"Hopfenpost Parkhaus","street":"Hopfenstr.","streetNumber":"6","lat":48.143337,"lng":11.554503,"rating":3},{"id":"72505","title":"Parkhaus am Stachus","street":"Adolf-Kolping-Str.","streetNumber":"10","lat":48.1381075,"lng":11.5630355,"rating":4.67},{"id":"1224102","title":"Galeria Kaufhof Rotkreuzplatz","street":"Donnersbergerstr.","streetNumber":null,"lat":48.15266616,"lng":11.53277065,"rating":0},{"id":"153788","title":"Parkhaus am Hauptbahnhof","street":"Arnulfstr.","streetNumber":"1","lat":48.141043557113,"lng":11.559701929572,"rating":0},{"id":"121107","title":"Karstadt München Bahnhofplatz","street":"Bahnhofplatz","streetNumber":"7","lat":48.140499,"lng":11.560844,"rating":3},{"id":"121104","title":"Tiefgarage am Hauptbahnhof","street":"Bahnhofplatz","streetNumber":"2","lat":48.14076,"lng":11.56061,"rating":0},{"id":"121106","title":"Parkhaus an der Marsstraße","street":"Hirtenstr.","streetNumber":"14","lat":48.142139,"lng":11.55854,"rating":2},{"id":"121092","title":"Parkhaus Oberanger","street":"Oberanger","streetNumber":"27","lat":48.134029,"lng":11.569986,"rating":5},{"id":"121094","title":"Tiefgarage Stachus","street":"Herzog-Wilhelm-Str.","streetNumber":"11","lat":48.137601,"lng":11.5667028,"rating":4},{"id":"121097","title":"Parkhaus Elisenhof","street":"Luitpoldstr.","streetNumber":"3","lat":48.1409303,"lng":11.5625947,"rating":0},{"id":"121100","title":"Tiefgarage Hotel ibis City","street":"Dachauer Str.","streetNumber":"21","lat":48.14403,"lng":11.55952,"rating":0},{"id":"1217898","title":"Tiefgarage Oberpollinger","street":"Neuhauser Str.","streetNumber":"18","lat":48.138771,"lng":11.56757,"rating":0},{"id":"121087","title":"Stachus-Park-Garagen","street":"Karlsplatz","streetNumber":"6","lat":48.13974,"lng":11.56641,"rating":0},{"id":"121088","title":"Pschorr Garage","street":"Altheimer Eck","streetNumber":"16","lat":48.137325,"lng":11.570128,"rating":4},{"id":"121105","title":"Parkgarage Schranne München","street":"Prälat-Zistl-Str.","streetNumber":"3","lat":48.134563,"lng":11.574459,"rating":3.4},{"id":"121093","title":"City-Parkhaus Färbergraben","street":"Färbergraben","streetNumber":"10","lat":48.1372976,"lng":11.571501,"rating":2.75},{"id":"121096","title":"Marienplatz Großgarage","street":"Rindermarkt","streetNumber":"16","lat":48.136227,"lng":11.574723,"rating":2.3},{"id":"121108","title":"Parkgarage Böhringer","street":"Baaderstr.","streetNumber":"6","lat":48.1330593,"lng":11.5810631,"rating":5},{"id":"121099","title":"Parkgarage Rieger City","street":"Frauenstr.","streetNumber":"38","lat":48.1345268,"lng":11.5806805,"rating":2},{"id":"121101","title":"Parkgarage am Salvatorplatz","street":"Salvatorplatz","streetNumber":"3","lat":48.142269,"lng":11.57519,"rating":3.67},{"id":"121098","title":"Tiefgarage vor der Oper","street":"Max-Joseph-Platz","streetNumber":"4","lat":48.14049,"lng":11.57764,"rating":0},{"id":"121103","title":"Parkhaus am Hofbräuhaus","street":"Hochbrückenstr.","streetNumber":"9","lat":48.137275367085,"lng":11.58140633504,"rating":0},{"id":"1224057","title":"Parkhaus Holiday Inn/Motorama","street":"Hochstr.","streetNumber":"3","lat":48.130607,"lng":11.589468,"rating":0},{"id":"1224056","title":"Parkgarage Gasteig","street":"Rosenheimer Str.","streetNumber":"5","lat":48.131005,"lng":11.590828,"rating":0},{"id":"1224045","title":"Park One Hilton München City","street":"Rosenheimer Str.","streetNumber":"15-17","lat":48.13017,"lng":11.59276,"rating":0},{"id":"1224051","title":"Parkhaus Hofbräukeller","street":"Innere Wiener Str.","streetNumber":"15","lat":48.13395,"lng":11.59439,"rating":0},{"id":"1224061","title":"Karstadt am Nordbad","street":"Schleißheimer Str. 93","streetNumber":null,"lat":48.1595259,"lng":11.5620762,"rating":0},{"id":"1224047","title":"Park One Amalien-Passage","street":"Türkenstr.","streetNumber":"84","lat":48.1517361,"lng":11.5771485,"rating":0},{"id":"1224109","title":"Tiefgarage P&R Westfriedhof","street":"Orpheusstr.","streetNumber":"1","lat":48.1708526,"lng":11.5285203,"rating":0},{"id":"1224059","title":"Parkhaus Mediaworks","street":"Rosenheimer Str.","streetNumber":"145 H-I","lat":48.1211213,"lng":11.6062601,"rating":0},{"id":"1273627","title":"Parkgarage Autospeicher","street":"Atelierstr. 8 (Werk 3)","streetNumber":null,"lat":48.124895,"lng":11.605819,"rating":0},{"id":"1224108","title":"Tiefgarage P&R Moosach","street":"Memminger Platz","streetNumber":null,"lat":48.1811,"lng":11.5051886,"rating":0},{"id":"1224106","title":"Tiefgarage Innsbrucker Ring","street":"Bad-Schachener-Str.","streetNumber":"41","lat":48.12051,"lng":11.6184996,"rating":0},{"id":"161621","title":"daseinstein Parkhaus","street":"Bothestr.","streetNumber":null,"lat":48.1361596,"lng":11.6131643,"rating":0},{"id":"1260859","title":"daseinstein Tiefgarage","street":"Einsteinstr.","streetNumber":"130","lat":48.13592611,"lng":11.61364808,"rating":0},{"id":"1224060","title":"Karstadt Schwabing","street":"Franzstr.","streetNumber":null,"lat":48.1609124,"lng":11.5872914,"rating":0},{"id":"1224048","title":"Park One im MONA","street":"Pelkovenstr.","streetNumber":"143-147","lat":48.1822449,"lng":11.5304177,"rating":0},{"id":"1224046","title":"Park One Hilton München Park","street":"Am Tucherpark","streetNumber":"7","lat":48.1531005,"lng":11.5990094,"rating":0},{"id":"1224097","title":"Olympia-Einkaufszentrum","street":"Hanauer Str.","streetNumber":"68","lat":48.18405,"lng":11.53224,"rating":0},{"id":"1224062","title":"Parkhaus Schwabing","street":"Occamstr.","streetNumber":"20","lat":48.1627,"lng":11.59031,"rating":0},{"id":"1224043","title":"BMW Parkhaus Süd","street":"Petuelring","streetNumber":"130","lat":48.17656677,"lng":11.56248346,"rating":0},{"id":"1224100","title":"BMW Parkhaus Nordost","street":"Riesenfeldstr.","streetNumber":null,"lat":48.18287998,"lng":11.56237884,"rating":0},{"id":"1224099","title":"BMW Parkhaus Nordwest","street":"Moosacher Str.","streetNumber":"61","lat":48.18579,"lng":11.55451,"rating":0},{"id":"1289720","title":"Park One Schwabinger Tor","street":"Leopoldstr. 184","streetNumber":null,"lat":48.1734243,"lng":11.5860777,"rating":0},{"id":"1224098","title":"PEP Einkaufscenter","street":"Ollenhauerstr.","streetNumber":"6","lat":48.1012,"lng":11.64349,"rating":0},{"id":"1224091","title":"Parkhaus Rosenkavalierplatz","street":"Elektrastr.","streetNumber":"3","lat":48.1528304,"lng":11.6214425,"rating":0},{"id":"1224103","title":"Tiefgarage Hotel Marriott","street":"Berliner Str.","streetNumber":"93","lat":48.17453,"lng":11.59262,"rating":0},{"id":"1224055","title":"Tiefgarage Ibis/Suite Novotel","street":"Lyonel-Feininger-Str.","streetNumber":"20","lat":48.1796264,"lng":11.5931016,"rating":0},{"id":"1224111","title":"The M.Pire","street":"Marcel-Breuer-Str.","streetNumber":"2","lat":48.181298,"lng":11.5970496,"rating":0},{"id":"1224095","title":"BMW Parkhaus FIZ","street":"Knorrstr.","streetNumber":"147","lat":48.1938086,"lng":11.5706652,"rating":0},{"id":"1224094","title":"BMW Parkhaus Hufelandstr.","street":"Hufelandstr.","streetNumber":"5","lat":48.1924141,"lng":11.5749566,"rating":0},{"id":"1224049","title":"Park One im MIRA","street":"Schleißheimer Str.","streetNumber":"506","lat":48.2131458,"lng":11.563606,"rating":0},{"id":"1224052","title":"Tiefgarage MOC","street":"Lilienthalallee","streetNumber":"40","lat":48.19784,"lng":11.61132,"rating":0},{"id":"1224058","title":"Parkhaus Kieferngarten","street":"Kieferngartenstr.","streetNumber":"14","lat":48.20206,"lng":11.6127,"rating":0},{"id":"72297","title":"Tiefgarage Riem Arcaden","street":"Willy-Brandt-Platz","streetNumber":"5","lat":48.1332324,"lng":11.6922217,"rating":2},{"id":"1224054","title":"Parkhaus Messe München","street":"Paul-Henri-Spaak-Str.","streetNumber":"6","lat":48.1393857,"lng":11.6903941,"rating":0},{"id":"1224053","title":"Parkhaus P&R Fröttmaning","street":"Werner-Heisenberg-Allee","streetNumber":"21","lat":48.21037,"lng":11.62024,"rating":0},{"id":"1224050","title":"Parkhaus P&R Messestadt Ost","street":"Am Messefreigel.","streetNumber":null,"lat":48.1358231,"lng":11.7059815,"rating":0},{"id":"1224044","title":"Parkhaus Allianz Arena","street":"Werner-Heisenberg-Allee","streetNumber":"25","lat":48.2186,"lng":11.62362,"rating":0}];
+
+const rated = places.filter(p => p.rating > 0);
+const avgRating = rated.length ? (rated.reduce((s,p) => s+p.rating,0)/rated.length) : 0;
+const topPlace = [...places].sort((a,b)=>b.rating-a.rating)[0];
+
+document.getElementById('m-total').textContent = places.length;
+document.getElementById('m-rated').textContent = rated.length + ' / ' + places.length;
+document.getElementById('m-avg').textContent = avgRating.toFixed(2) + ' ★';
+document.getElementById('m-best').textContent = topPlace ? topPlace.rating.toFixed(2) + ' ★' : '—';
+
+const map = L.map('map').setView([48.155, 11.575], 11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 19
+}).addTo(map);
+
+function markerColor(r) {
+  if (r === 0) return '#888780';
+  if (r >= 4.5) return '#1D9E75';
+  if (r >= 3.5) return '#378ADD';
+  return '#EF9F27';
+}
+
+places.forEach(p => {
+  const color = markerColor(p.rating);
+  const icon = L.divIcon({
+    html: `<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>`,
+    className: '',
+    iconSize: [12,12],
+    iconAnchor: [6,6]
+  });
+  const addr = p.street + (p.streetNumber ? ' ' + p.streetNumber : '');
+  const ratingText = p.rating > 0 ? `<span style="color:#BA7517">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5-Math.round(p.rating))}</span> ${p.rating.toFixed(2)}` : '<span style="color:#aaa">nicht bewertet</span>';
+  L.marker([p.lat, p.lng], {icon})
+    .addTo(map)
+    .bindPopup(`<div class="popup-title">${p.title}</div><div class="popup-addr">${addr}</div><div class="popup-rating">${ratingText}</div>`);
+});
+
+const mapLegend = L.control({position:'bottomright'});
+mapLegend.onAdd = () => {
+  const d = L.DomUtil.create('div');
+  d.innerHTML = `<div style="background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #e5e4de;font-size:12px;color:#444;line-height:1.8">
+    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1D9E75;margin-right:6px;vertical-align:middle"></span>≥ 4.5 ★</div>
+    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#378ADD;margin-right:6px;vertical-align:middle"></span>3.5–4.4 ★</div>
+    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#EF9F27;margin-right:6px;vertical-align:middle"></span>&lt; 3.5 ★</div>
+    <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#888780;margin-right:6px;vertical-align:middle"></span>keine Bewertung</div>
+  </div>`;
+  return d;
+};
+mapLegend.addTo(map);
+
+const top10 = [...places].filter(p=>p.rating>0).sort((a,b)=>b.rating-a.rating).slice(0,10);
+new Chart(document.getElementById('topChart'), {
+  type: 'bar',
+  data: {
+    labels: top10.map(p => p.title.length>24 ? p.title.slice(0,22)+'…' : p.title),
+    datasets: [{
+      label: 'Bewertung',
+      data: top10.map(p => p.rating),
+      backgroundColor: top10.map(p => p.rating >= 4.5 ? '#1D9E75' : p.rating >= 3.5 ? '#378ADD' : '#EF9F27'),
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { min:0, max:5, ticks:{font:{size:11},color:'#888780'}, grid:{color:'rgba(0,0,0,0.06)'} },
+      y: { ticks:{font:{size:11},color:'#444441'}, grid:{display:false} }
+    }
+  }
+});
+
+let filtered = [...places];
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const rf = document.getElementById('ratingFilter').value;
+  filtered = places.filter(p => {
+    const matchText = p.title.toLowerCase().includes(q) || p.street.toLowerCase().includes(q);
+    const r = p.rating;
+    let matchR = true;
+    if (rf==='rated') matchR = r>0;
+    else if (rf==='5') matchR = r>=5;
+    else if (rf==='4') matchR = r>=4;
+    else if (rf==='3') matchR = r>=3;
+    return matchText && matchR;
+  });
+  renderTable();
+}
+
+function starsHtml(r) {
+  if (r===0) return '<span class="badge badge-none">keine</span>';
+  const f = Math.round(r);
+  return `<span class="stars">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> ${r.toFixed(2)}`;
+}
+
+function renderTable() {
+  document.getElementById('tableBody').innerHTML = filtered.map(p => {
+    const addr = p.street + (p.streetNumber ? ' ' + p.streetNumber : '');
+    return `<tr>
+      <td title="${p.title}">${p.title}</td>
+      <td title="${addr}">${addr}</td>
+      <td style="font-family:monospace;font-size:11px;color:#888780">${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</td>
+      <td>${starsHtml(p.rating)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tableCount').textContent = `${filtered.length} von ${places.length} Einträgen`;
+}
+
+renderTable();
+</script>
+</body>
+</html>
