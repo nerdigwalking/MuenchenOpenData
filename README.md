@@ -1,2 +1,2 @@
-# Parkhaus
-Zapft Parkhaus API an.
+# MuenchenOpenData
+Zapft APIs mit Infos über München an.
