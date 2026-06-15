@@ -1,2 +1,2 @@
-# Parkh-user
+# Parkhaus
 Zapft Parkhaus API an.
