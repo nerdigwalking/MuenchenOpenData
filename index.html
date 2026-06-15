@@ -49,16 +49,16 @@ nav { background:var(--surface); border-bottom:1px solid var(--border); display:
 /* ── LAYOUT ── */
 .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--rl); padding:18px; }
 .card-title { font-size:11px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:12px; }
-.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+.two-col { display:grid; grid-template-columns:3fr 2fr; gap:16px; margin-bottom:18px; }
 .mb { margin-bottom:18px; }
 
 /* ── MAPS ── */
-.map-box { height:380px; border-radius:8px; border:1px solid var(--border); }
-.map-box-lg { height:440px; border-radius:8px; border:1px solid var(--border); }
+.map-box { height:480px; border-radius:8px; border:1px solid var(--border); }
+.map-box-lg { height:540px; border-radius:8px; border:1px solid var(--border); }
 
 /* ── CHARTS ── */
-.ch { position:relative; height:300px; }
-.ch-sm { position:relative; height:250px; }
+.ch { position:relative; height:260px; }
+.ch-sm { position:relative; height:210px; }
 
 /* ── TABLE ── */
 .search-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center; }
@@ -443,28 +443,40 @@ function renderP(){
 ══════════════════════════════════════ */
 let mData=[],mFilt=[],mMap=null,mCharts={};
 const M_API='https://machmuenchenbesser.de/georeport/v2/requests.json?start_date=2025-01-01';
-const CORS_PROXY='https://api.allorigins.win/get?url=';
-async function initM(){
-  // Try direct first (works if server sets CORS headers), then proxy fallback
-  let j=null,lastErr='';
-  for(const url of [M_API, CORS_PROXY+encodeURIComponent(M_API)]){
+
+// Fetches via a list of strategies: direct → corsproxy.io → allorigins
+async function fetchWithCORSFallback(targetUrl){
+  const strategies=[
+    // 1) Direkt (klappt wenn API CORS-Header setzt)
+    {url:targetUrl, parse:r=>r.json()},
+    // 2) corsproxy.io – einfaches Prefix, antwortet mit rohem JSON
+    {url:'https://corsproxy.io/?url='+encodeURIComponent(targetUrl), parse:r=>r.json()},
+    // 3) allorigins – wraps in {contents:"..."}
+    {url:'https://api.allorigins.win/get?url='+encodeURIComponent(targetUrl),
+      parse:async r=>{const w=await r.json();return JSON.parse(w.contents);}},
+  ];
+  let lastErr='';
+  for(const s of strategies){
     try{
-      const res=await fetch(url);
+      const res=await fetch(s.url,{signal:AbortSignal.timeout(10000)});
       if(!res.ok)throw new Error('HTTP '+res.status);
-      const raw=await res.json();
-      // allorigins wraps response in {contents: "..."}
-      j=raw.contents?JSON.parse(raw.contents):raw;
-      if(j)break;
-    }catch(e){lastErr=e.message;}
+      const data=await s.parse(res);
+      if(data)return data;
+    }catch(e){lastErr=e.message;console.warn('CORS strategy failed:',s.url,e.message);}
   }
-  if(!j){
+  throw new Error(lastErr||'Alle Proxy-Strategien fehlgeschlagen');
+}
+
+async function initM(){
+  try{
+    const j=await fetchWithCORSFallback(M_API);
+    mData=Array.isArray(j)?j:(j.service_requests||j.requests||[]);
+    buildM();
+  }catch(e){
     document.getElementById('m-load').style.display='none';
     document.getElementById('m-err').style.display='block';
-    document.getElementById('m-err').innerHTML=`<strong>Meldungen konnten nicht geladen werden.</strong> Die API ist momentan nicht erreichbar oder der CORS-Proxy antwortet nicht.<br><small style="color:#854F0B">${lastErr}</small>`;
-    return;
+    document.getElementById('m-err').innerHTML=`<strong>Meldungen konnten nicht geladen werden.</strong><br>Alle drei Zugriffsstrategien (direkt, corsproxy.io, allorigins.win) sind fehlgeschlagen. Bitte später nochmal versuchen.<br><small style="color:#854F0B">${e.message}</small>`;
   }
-  mData=Array.isArray(j)?j:(j.service_requests||j.requests||[]);
-  buildM();
 }
 function buildM(){
   document.getElementById('m-load').style.display='none';
